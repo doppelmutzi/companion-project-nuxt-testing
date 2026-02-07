@@ -1,0 +1,35 @@
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${input:context7_mcp_pat}"
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "nuxt": {
+      "type": "http",
+      "url": "https://nuxt.com/mcp"
+    }
+  },
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "context7_mcp_pat",
+      "description": "Context 7 Personal Access Token",
+      "password": true
+    }
+  ]
+}

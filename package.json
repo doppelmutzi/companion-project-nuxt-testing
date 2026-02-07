@@ -1,0 +1,20 @@
+{
+  "name": "companion-project-temp",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.3",
+    "nuxt": "^4.3.0",
+    "pinia": "^3.0.4",
+    "sass": "^1.97.3",
+    "vue": "^3.5.27",
+    "vue-router": "^4.6.4"
+  }
+}
