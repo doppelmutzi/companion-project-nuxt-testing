@@ -15,14 +15,14 @@
 - The ActionBar uses the store theme directly as inline styles (see [app/components/ActionBar.vue](app/components/ActionBar.vue)).
 
 ## Conventions & patterns
-- Vue SFCs use `<script setup lang="ts">` and scoped SCSS (`<style scoped lang="scss">`).
+- Vue SFCs use `<script setup lang="ts">` and SCSS (`<style lang="scss">`). Do **not** use `scoped` styles.
 - Components pass callbacks as props named `onClick` (kebab-cased in templates as `:on-click`), e.g., [app/components/ClearButton.vue](app/components/ClearButton.vue) and [app/components/DeleteButton.vue](app/components/DeleteButton.vue).
 - Prefer computed state for derived view text (example: [app/components/Status.vue](app/components/Status.vue)).
 - Keep Todo item updates immutable (clone array then assign), as in `toggleCheckTodo` in [app/stores/todos.ts](app/stores/todos.ts).
 
 ## Styling
 - Global reset and typography live in [app/assets/global-styles/_reset.scss](app/assets/global-styles/_reset.scss) and [app/assets/global-styles/main.scss](app/assets/global-styles/main.scss).
-- Component styles are scoped; avoid leaking global selectors outside the reset/typography files.
+- Component styles are **not** scoped; do not add the `scoped` attribute to `<style>` tags.
 
 ## Testing focus (companion project)
 - This repo is meant to be extended with unit and e2e tests; keep UI logic deterministic and easy to select in tests (e.g., stable DOM structure, minimal side effects).

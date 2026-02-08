@@ -40,7 +40,7 @@ const handleCompletedClick = () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .filter-buttons {
   display: flex;
 

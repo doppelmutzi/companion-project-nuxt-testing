@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClick()">{{ label }}</button>
+  <button class="delete-button" @click="onClick()">{{ label }}</button>
 </template>
 
 <script setup lang="ts">
@@ -17,8 +17,8 @@ defineProps({
 });
 </script>
 
-<style scoped lang="scss">
-button {
+<style lang="scss">
+.delete-button {
   border: none;
   font-size: 30px;
   cursor: pointer;

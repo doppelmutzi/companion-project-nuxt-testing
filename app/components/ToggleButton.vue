@@ -18,7 +18,7 @@ const isVisible = computed(() => store.todos.length > 0);
 const onToggle = () => store.toggleTodos();
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .toggle-button {
   width: 60px;
   display: flex;

@@ -1,5 +1,5 @@
 <template>
-  <h1 :style="{ color }">{{ text }}</h1>
+  <h1 class="headline" :style="{ color }">{{ text }}</h1>
 </template>
 <script lang="ts" setup>
 import { type PropType, computed } from "vue";
@@ -28,8 +28,8 @@ const color = computed(() => {
   }
 });
 </script>
-<style scoped lang="scss">
-h1 {
+<style lang="scss">
+.headline {
   font-size: 100px;
   font-weight: 100;
   text-align: center;

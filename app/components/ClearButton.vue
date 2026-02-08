@@ -1,5 +1,5 @@
 <template>
-  <a @click="onClick()">clear completed</a>
+  <a class="clear-button" @click="onClick()">clear completed</a>
 </template>
 
 <script setup lang="ts">
@@ -13,8 +13,8 @@ defineProps({
 });
 </script>
 
-<style scoped lang="scss">
-a {
+<style lang="scss">
+.clear-button {
   padding: 4px 0;
   cursor: pointer;
 

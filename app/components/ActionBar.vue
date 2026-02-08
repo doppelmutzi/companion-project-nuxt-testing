@@ -23,7 +23,7 @@ const showClearButton = computed(() => todosChecked.value);
 const handleClearClick = () => clearCheckedTodos();
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .action-bar {
   background: white;
   padding: 0 16px;

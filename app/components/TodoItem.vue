@@ -50,7 +50,7 @@ const handleCheckClick = () => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .todo-item {
   background: white;
   padding: 16px;

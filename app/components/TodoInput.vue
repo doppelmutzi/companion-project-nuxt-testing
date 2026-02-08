@@ -16,8 +16,7 @@ import translation from "../utils/translation";
 import { ref } from "vue";
 
 const { todoInput, getPreferedLang } = translation;
-const lang: string = getPreferedLang();
-// FIXME how to type this?
+const lang = getPreferedLang() as keyof typeof todoInput.placeholder;
 const placeholder = todoInput.placeholder[lang];
 
 let inputValue = ref("");
@@ -38,7 +37,7 @@ const onEnter = (evt: Event) => {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .todo-input {
   --text-color: rgba(175, 47, 47);
 

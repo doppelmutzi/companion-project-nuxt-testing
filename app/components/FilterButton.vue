@@ -1,5 +1,6 @@
 <template>
   <button
+    class="filter-button"
     :style="{
       borderColor: active ? theme.color : 'transparent',
       backgroundColor,
@@ -26,8 +27,8 @@ defineProps<ButtonProps>();
 const { theme } = storeToRefs(useTodosStore());
 const { backgroundColor, color } = theme.value;
 </script>
-<style scoped lang="scss">
-button {
+<style lang="scss">
+.filter-button {
   border-style: solid;
   border-width: 1px;
   padding: 7px;
