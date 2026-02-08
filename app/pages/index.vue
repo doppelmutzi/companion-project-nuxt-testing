@@ -1,8 +1,11 @@
 <template>
-  <div class="todos">
-    <TodoInput />
-    <TodoList />
-    <ActionBar v-if="showActionBar" />
+  <div>
+    <Headline :text="appTitle" />
+    <div class="todos">
+      <TodoInput />
+      <TodoList />
+      <ActionBar v-if="showActionBar" />
+    </div>
   </div>
 </template>
 
@@ -10,8 +13,11 @@
 import { useTodosStore } from "@/stores/todos";
 import { computed } from "vue";
 import ActionBar from "@/components/ActionBar.vue";
+import Headline from "@/components/Headline.vue";
 import TodoInput from "@/components/TodoInput.vue";
 import TodoList from "@/components/TodoList.vue";
+
+const { appTitle } = useRuntimeConfig().public;
 
 const { todos } = useTodosStore();
 const showActionBar = computed(() => todos.length > 0);

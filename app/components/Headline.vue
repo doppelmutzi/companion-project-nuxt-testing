@@ -24,7 +24,7 @@ const color = computed(() => {
     case "gray":
       return `rgb(109, 117, 130)`;
     default:
-      return `rgba(175, 47, 47`;
+      return `rgba(175, 47, 47)`;
   }
 });
 </script>
