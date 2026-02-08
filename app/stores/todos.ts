@@ -1,6 +1,6 @@
-import theme from "../utils/theme";
+import themeConfig from "../utils/theme";
 import { defineStore } from "pinia";
-import { toRaw } from "vue";
+import { ref, computed } from "vue";
 
 export interface Todo {
   id: number;
@@ -9,78 +9,101 @@ export interface Todo {
   checked: boolean;
 }
 
-// eslint-disable-next-line no-unused-vars
 export enum FilterIndex {
-  // eslint-disable-next-line no-unused-vars
   ALL = 0,
-  // eslint-disable-next-line no-unused-vars
   CHECKED = 1,
-  // eslint-disable-next-line no-unused-vars
   UNCHECKED = 2,
 }
 
-export const useTodosStore = defineStore("todos", {
-  state: () => ({
-    theme: theme.DARK,
-    todos: [] as Array<Todo>,
-    filterIndex: FilterIndex.ALL,
-  }),
-  getters: {
-    todosLeft: (state) =>
-      state.todos.reduce((count, todo) => {
-        if (!todo.checked) return count + 1;
-        return count;
-      }, 0),
-    filteredTodos: (state) => {
-      if (state.filterIndex === FilterIndex.ALL) {
-        return state.todos;
-      } else if (state.filterIndex === FilterIndex.UNCHECKED) {
-        return state.todos.filter((todo) => !todo.checked);
-      } else {
-        return state.todos.filter((todo) => todo.checked);
-      }
-    },
-    todosChecked(): boolean {
-      return this.todosLeft !== this.todos.length;
-    },
-  },
-  actions: {
-    setTodos(todos: Todo[]) {
-      this.todos = todos;
-    },
-    toggleDarkMode() {
-      const currentTheme = toRaw(this.theme);
-      if (currentTheme === theme.DARK) this.theme = theme.LIGHT;
-      else this.theme = theme.DARK;
-    },
-    addTodo(todo: Todo) {
-      this.todos.push(todo);
-    },
-    toggleTodos() {
-      const toggledTodos = this.todos.map((todo) => ({
-        ...todo,
-        checked: this.todosLeft > 0,
-      }));
-      this.todos = toggledTodos;
-    },
-    toggleCheckTodo(todo: Todo) {
-      const index = this.todos.findIndex((item) => item.id === todo.id);
-      const updatedTodos = [...this.todos];
-      updatedTodos[index] = {
-        ...todo,
-        checked: !todo.checked,
-      };
-      this.todos = updatedTodos;
-    },
-    removeTodo(todo: Todo) {
-      this.todos = [...this.todos.filter((item) => item.id != todo.id)];
-    },
-    clearCheckedTodos() {
-      const uncheckedTodos = this.todos.filter((todo) => !todo.checked);
-      this.todos = [...uncheckedTodos];
-    },
-    setFilterIndex(index: FilterIndex) {
-      this.filterIndex = index;
-    },
-  },
+export const useTodosStore = defineStore("todos", () => {
+  // state
+  const theme = ref(themeConfig.DARK);
+  const todos = ref<Todo[]>([]);
+  const filterIndex = ref(FilterIndex.ALL);
+
+  // getters
+  const todosLeft = computed(() =>
+    todos.value.reduce((count, todo) => {
+      if (!todo.checked) return count + 1;
+      return count;
+    }, 0),
+  );
+
+  const filteredTodos = computed(() => {
+    if (filterIndex.value === FilterIndex.ALL) {
+      return todos.value;
+    } else if (filterIndex.value === FilterIndex.UNCHECKED) {
+      return todos.value.filter((todo) => !todo.checked);
+    } else {
+      return todos.value.filter((todo) => todo.checked);
+    }
+  });
+
+  const todosChecked = computed(() => todosLeft.value !== todos.value.length);
+
+  // actions
+  function setTodos(newTodos: Todo[]) {
+    todos.value = newTodos;
+  }
+
+  function toggleDarkMode() {
+    if (theme.value === themeConfig.DARK) {
+      theme.value = themeConfig.LIGHT;
+    } else {
+      theme.value = themeConfig.DARK;
+    }
+  }
+
+  function addTodo(todo: Todo) {
+    todos.value.push(todo);
+  }
+
+  function toggleTodos() {
+    todos.value = todos.value.map((todo) => ({
+      ...todo,
+      checked: todosLeft.value > 0,
+    }));
+  }
+
+  function toggleCheckTodo(todo: Todo) {
+    const index = todos.value.findIndex((item) => item.id === todo.id);
+    const updatedTodos = [...todos.value];
+    updatedTodos[index] = {
+      ...todo,
+      checked: !todo.checked,
+    };
+    todos.value = updatedTodos;
+  }
+
+  function removeTodo(todo: Todo) {
+    todos.value = [...todos.value.filter((item) => item.id != todo.id)];
+  }
+
+  function clearCheckedTodos() {
+    todos.value = [...todos.value.filter((todo) => !todo.checked)];
+  }
+
+  function setFilterIndex(index: FilterIndex) {
+    filterIndex.value = index;
+  }
+
+  return {
+    // state
+    theme,
+    todos,
+    filterIndex,
+    // getters
+    todosLeft,
+    filteredTodos,
+    todosChecked,
+    // actions
+    setTodos,
+    toggleDarkMode,
+    addTodo,
+    toggleTodos,
+    toggleCheckTodo,
+    removeTodo,
+    clearCheckedTodos,
+    setFilterIndex,
+  };
 });

@@ -11,7 +11,7 @@
 
 ## Refactoring
 
-- [ ] **7. Refactor Pinia store to setup syntax** — Rewrite `app/stores/todos.ts` from the Options API style (`state`/`getters`/`actions` objects) to the Composition API style (setup function with `ref`, `computed`, and plain functions).
+- [x] **7. Refactor Pinia store to setup syntax** — Rewrite `app/stores/todos.ts` from the Options API style (`state`/`getters`/`actions` objects) to the Composition API style (setup function with `ref`, `computed`, and plain functions).
 
 ## Cleanup
 
