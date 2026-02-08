@@ -22,20 +22,7 @@ export enum FilterIndex {
 export const useTodosStore = defineStore("todos", {
   state: () => ({
     theme: theme.DARK,
-    todos: [
-      {
-        id: 1,
-        label: "checked todo",
-        date: "today",
-        checked: false,
-      },
-      {
-        id: 2,
-        label: "unchecked todo",
-        date: "today",
-        checked: true,
-      },
-    ] as Array<Todo>,
+    todos: [] as Array<Todo>,
     filterIndex: FilterIndex.ALL,
   }),
   getters: {
@@ -58,6 +45,9 @@ export const useTodosStore = defineStore("todos", {
     },
   },
   actions: {
+    setTodos(todos: Todo[]) {
+      this.todos = todos;
+    },
     toggleDarkMode() {
       const currentTheme = toRaw(this.theme);
       if (currentTheme === theme.DARK) this.theme = theme.LIGHT;
