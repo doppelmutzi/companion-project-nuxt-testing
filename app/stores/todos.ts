@@ -54,32 +54,41 @@ export const useTodosStore = defineStore("todos", () => {
     }
   }
 
-  function addTodo(todo: Todo) {
-    todos.value.push(todo);
+  async function addTodo(todo: Todo) {
+    const created = await $fetch<Todo>("/api/todos", {
+      method: "POST",
+      body: todo,
+    });
+    todos.value.push(created);
   }
 
-  function toggleTodos() {
-    todos.value = todos.value.map((todo) => ({
-      ...todo,
-      checked: todosLeft.value > 0,
-    }));
+  async function toggleTodos() {
+    const shouldCheck = todosLeft.value > 0;
+    const updated = await $fetch<Todo[]>("/api/todos", {
+      method: "PATCH",
+      body: { checked: shouldCheck },
+    });
+    todos.value = updated;
   }
 
-  function toggleCheckTodo(todo: Todo) {
+  async function toggleCheckTodo(todo: Todo) {
+    const updated = await $fetch<Todo>(`/api/todos/${todo.id}`, {
+      method: "PATCH",
+      body: { checked: !todo.checked },
+    });
     const index = todos.value.findIndex((item) => item.id === todo.id);
     const updatedTodos = [...todos.value];
-    updatedTodos[index] = {
-      ...todo,
-      checked: !todo.checked,
-    };
+    updatedTodos[index] = updated!;
     todos.value = updatedTodos;
   }
 
-  function removeTodo(todo: Todo) {
+  async function removeTodo(todo: Todo) {
+    await $fetch(`/api/todos/${todo.id}`, { method: "DELETE" });
     todos.value = [...todos.value.filter((item) => item.id != todo.id)];
   }
 
-  function clearCheckedTodos() {
+  async function clearCheckedTodos() {
+    await $fetch("/api/todos", { method: "DELETE" });
     todos.value = [...todos.value.filter((todo) => !todo.checked)];
   }
 

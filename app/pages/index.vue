@@ -23,7 +23,7 @@ const { appTitle } = useRuntimeConfig().public;
 const store = useTodosStore();
 const { data } = await useFetch<Todo[]>("/api/todos");
 
-if (data.value && store.todos.length === 0) {
+if (data.value) {
   store.setTodos(data.value);
 }
 

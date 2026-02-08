@@ -1,6 +1,5 @@
-import type { Todo } from "~~/app/stores/todos";
-import { todos } from "../data/todos";
+import { getAllTodos } from "../utils/db";
 
-export default defineEventHandler((): Todo[] => {
-  return todos;
+export default defineEventHandler(() => {
+  return getAllTodos();
 });

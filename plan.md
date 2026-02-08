@@ -9,6 +9,10 @@
 - [ ] **5. Default layout** — Create `app/layouts/default.vue` with `Headline` and a nav bar (`NuxtLink` to `/`). Update `app/app.vue` to use `<NuxtLayout>` wrapping `<NuxtPage />`.
 - [ ] **6. `useState` for dark mode** — Create `app/composables/useDarkMode.ts` using `useState('darkMode', () => false)`. Replace the theme field in the Pinia store with this composable. Wire it into `ActionBar` and `FilterButton`.
 
+## Persistence
+
+- [ ] **10. Server-side persistence with SQLite** — Replace the static in-memory seed data with a SQLite database (`better-sqlite3`). Create `server/utils/db.ts` for DB setup. Add full CRUD API routes (`POST`, `PATCH`, `DELETE`). Wire Pinia store actions to call the API so all mutations persist across reloads. Remove `server/data/todos.ts`.
+
 ## Refactoring
 
 - [x] **7. Refactor Pinia store to setup syntax** — Rewrite `app/stores/todos.ts` from the Options API style (`state`/`getters`/`actions` objects) to the Composition API style (setup function with `ref`, `computed`, and plain functions).

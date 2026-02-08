@@ -1,15 +1,16 @@
-import { getTodoById } from "../../utils/db";
+import { deleteTodo } from "../../utils/db";
 
 export default defineEventHandler((event) => {
   const id = Number(getRouterParam(event, "id"));
-  const todo = getTodoById(id);
+  const deleted = deleteTodo(id);
 
-  if (!todo) {
+  if (!deleted) {
     throw createError({
       statusCode: 404,
       statusMessage: `Todo with id ${id} not found`,
     });
   }
 
-  return todo;
+  setResponseStatus(event, 204);
+  return null;
 });
