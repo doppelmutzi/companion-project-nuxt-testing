@@ -4,10 +4,14 @@
       <button class="check-button" @click="handleCheckClick()">
         <span v-show="todo.checked" class="check">✔️</span>
       </button>
-      <div class="item-label" :class="{ 'is-crossed-out': isCrossedOut }">
+      <NuxtLink
+        :to="`/todos/${todo.id}`"
+        class="item-label"
+        :class="{ 'is-crossed-out': isCrossedOut }"
+      >
         {{ todo.label }}
         <div>{{ todo.date }}</div>
-      </div>
+      </NuxtLink>
       <DeleteButton v-show="hover" :on-click="handleDeleteClick" />
     </div>
   </div>
@@ -80,6 +84,8 @@ const handleCheckClick = () => {
   flex: 1;
   font-size: 24px;
   margin: 0 24px;
+  text-decoration: none;
+  color: inherit;
 
   > div {
     display: block;
