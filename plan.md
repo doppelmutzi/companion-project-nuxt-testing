@@ -7,15 +7,12 @@
 - [x] **3. Dynamic todo detail page** — Add `app/pages/todos/[id].vue` using `useRoute()` to read the param, display todo details, and throw `createError({ statusCode: 404 })` if not found. Add `useHead` to set a dynamic `<title>`.
 - [x] **4. `<NuxtLink>` in TodoItem** — Wrap the todo label in `app/components/TodoItem.vue` with `<NuxtLink>` for navigation to the detail page.
 - [x] **5. Default layout** — Create `app/layouts/default.vue` with `Headline` wrapped in a `<NuxtLink to="/">` so it serves as shared header and home navigation for all routes (index and todo detail). Update `app/app.vue` to use `<NuxtLayout>` wrapping `<NuxtPage />`. Remove the per-page `<Headline>` from `index.vue` and the "← Back to list" link from `[id].vue`.
-- [ ] **6. `useState` for dark mode** — Create `app/composables/useDarkMode.ts` using `useState('darkMode', () => false)`. Replace the theme field in the Pinia store with this composable. Wire it into `ActionBar` and `FilterButton`.
+- [x] **6. `useState` for dark mode** — Create `app/composables/useDarkMode.ts` using `useState('darkMode', () => false)`. Replace the theme field in the Pinia store with this composable. Wire it into `ActionBar` and `FilterButton`.
+
 
 ## Persistence
 
-- [ ] **10. Server-side persistence with SQLite** — Replace the static in-memory seed data with a SQLite database (`better-sqlite3`). Create `server/utils/db.ts` for DB setup. Add full CRUD API routes (`POST`, `PATCH`, `DELETE`). Wire Pinia store actions to call the API so all mutations persist across reloads. Remove `server/data/todos.ts`.
-
-## Refactoring
-
-- [x] **7. Refactor Pinia store to setup syntax** — Rewrite `app/stores/todos.ts` from the Options API style (`state`/`getters`/`actions` objects) to the Composition API style (setup function with `ref`, `computed`, and plain functions).
+- [x] **10. Server-side persistence with SQLite** — Replace the static in-memory seed data with a SQLite database (`better-sqlite3`). Create `server/utils/db.ts` for DB setup. Add full CRUD API routes (`POST`, `PATCH`, `DELETE`). Wire Pinia store actions to call the API so all mutations persist across reloads. Remove `server/data/todos.ts`.
 
 ## Cleanup
 

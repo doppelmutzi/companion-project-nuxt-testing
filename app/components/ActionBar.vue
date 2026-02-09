@@ -17,7 +17,8 @@ import { useTodosStore } from "@/stores/todos";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 
-const { theme, todosChecked } = storeToRefs(useTodosStore());
+const { theme } = useDarkMode();
+const { todosChecked } = storeToRefs(useTodosStore());
 const { clearCheckedTodos } = useTodosStore();
 const showClearButton = computed(() => todosChecked.value);
 const handleClearClick = () => clearCheckedTodos();

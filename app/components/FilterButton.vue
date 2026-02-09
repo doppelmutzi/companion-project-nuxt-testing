@@ -13,9 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { useTodosStore } from "@/stores/todos";
-import { storeToRefs } from "pinia";
-
 interface ButtonProps {
   label: string;
   active: boolean;
@@ -24,7 +21,7 @@ interface ButtonProps {
 
 defineProps<ButtonProps>();
 
-const { theme } = storeToRefs(useTodosStore());
+const { theme } = useDarkMode();
 const { backgroundColor, color } = theme.value;
 </script>
 <style lang="scss">

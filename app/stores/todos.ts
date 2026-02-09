@@ -1,4 +1,3 @@
-import themeConfig from "../utils/theme";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
@@ -17,7 +16,6 @@ export enum FilterIndex {
 
 export const useTodosStore = defineStore("todos", () => {
   // state
-  const theme = ref(themeConfig.DARK);
   const todos = ref<Todo[]>([]);
   const filterIndex = ref(FilterIndex.ALL);
 
@@ -44,14 +42,6 @@ export const useTodosStore = defineStore("todos", () => {
   // actions
   function setTodos(newTodos: Todo[]) {
     todos.value = newTodos;
-  }
-
-  function toggleDarkMode() {
-    if (theme.value === themeConfig.DARK) {
-      theme.value = themeConfig.LIGHT;
-    } else {
-      theme.value = themeConfig.DARK;
-    }
   }
 
   async function addTodo(todo: Todo) {
@@ -98,7 +88,6 @@ export const useTodosStore = defineStore("todos", () => {
 
   return {
     // state
-    theme,
     todos,
     filterIndex,
     // getters
@@ -107,7 +96,6 @@ export const useTodosStore = defineStore("todos", () => {
     todosChecked,
     // actions
     setTodos,
-    toggleDarkMode,
     addTodo,
     toggleTodos,
     toggleCheckTodo,
