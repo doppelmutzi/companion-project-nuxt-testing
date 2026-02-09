@@ -9,7 +9,7 @@
           {{ todo?.checked ? "Completed" : "Active" }}
         </span>
       </p>
-      <NuxtLink to="/" class="todo-detail__back">← Back to list</NuxtLink>
+
     </div>
   </div>
 </template>
@@ -64,16 +64,7 @@ useHead({
     margin-bottom: 20px;
   }
 
-  &__back {
-    display: inline-block;
-    color: rgba(175, 47, 47, 0.6);
-    text-decoration: none;
-    font-size: 14px;
 
-    &:hover {
-      color: rgba(175, 47, 47, 1);
-    }
-  }
 }
 
 .is-checked {

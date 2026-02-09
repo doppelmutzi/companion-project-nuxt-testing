@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Headline :text="appTitle" />
     <div class="todos">
       <TodoInput />
       <TodoList />
@@ -14,11 +13,8 @@ import { useTodosStore } from "@/stores/todos";
 import { computed } from "vue";
 import type { Todo } from "@/stores/todos";
 import ActionBar from "@/components/ActionBar.vue";
-import Headline from "@/components/Headline.vue";
 import TodoInput from "@/components/TodoInput.vue";
 import TodoList from "@/components/TodoList.vue";
-
-const { appTitle } = useRuntimeConfig().public;
 
 const store = useTodosStore();
 const { data } = await useFetch<Todo[]>("/api/todos");

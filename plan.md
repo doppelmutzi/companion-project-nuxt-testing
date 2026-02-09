@@ -6,7 +6,7 @@
 - [x] **2. Server API route + `useFetch`** — Create `server/api/todos.get.ts` with an in-memory todo array. Refactor `app/pages/index.vue` to seed the Pinia store from `useFetch('/api/todos')` instead of hardcoding todos in the store.
 - [x] **3. Dynamic todo detail page** — Add `app/pages/todos/[id].vue` using `useRoute()` to read the param, display todo details, and throw `createError({ statusCode: 404 })` if not found. Add `useHead` to set a dynamic `<title>`.
 - [x] **4. `<NuxtLink>` in TodoItem** — Wrap the todo label in `app/components/TodoItem.vue` with `<NuxtLink>` for navigation to the detail page.
-- [ ] **5. Default layout** — Create `app/layouts/default.vue` with `Headline` and a nav bar (`NuxtLink` to `/`). Update `app/app.vue` to use `<NuxtLayout>` wrapping `<NuxtPage />`.
+- [x] **5. Default layout** — Create `app/layouts/default.vue` with `Headline` wrapped in a `<NuxtLink to="/">` so it serves as shared header and home navigation for all routes (index and todo detail). Update `app/app.vue` to use `<NuxtLayout>` wrapping `<NuxtPage />`. Remove the per-page `<Headline>` from `index.vue` and the "← Back to list" link from `[id].vue`.
 - [ ] **6. `useState` for dark mode** — Create `app/composables/useDarkMode.ts` using `useState('darkMode', () => false)`. Replace the theme field in the Pinia store with this composable. Wire it into `ActionBar` and `FilterButton`.
 
 ## Persistence
