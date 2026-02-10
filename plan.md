@@ -19,7 +19,7 @@
 ## Cleanup
 
 - [x] **8. Delete `app/views/Todos.vue`** — Remove the unused duplicate of `index.vue`.
-- [ ] **9. Update `.github/copilot-instructions.md`** — Reflect all new Nuxt features, file structure, and data flow changes.
+- [x] **9. Update `.github/copilot-instructions.md`** — Reflect all new Nuxt features, file structure, and data flow changes.
 
 ## Testing
 
