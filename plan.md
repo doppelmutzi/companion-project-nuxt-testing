@@ -37,8 +37,8 @@ These tests run inside a **full Nuxt environment** (`environment: 'nuxt'` in Vit
 
 - [ ] **T4. `mountSuspended` — TodoItem** — Mount `TodoItem` with `mountSuspended`, verify it renders the label text and date. Verify the `<NuxtLink>` points to `/todos/:id`.
 - [ ] **T5. `renderSuspended` — ActionBar with Testing Library** — Use `renderSuspended` + `screen.getByText` to verify the action bar renders status text, filter buttons, and the "clear completed" link when todos are checked. Use `registerEndpoint` to mock `/api/todos`.
-- [ ] **T6. `registerEndpoint` — index page** — Register a mock `/api/todos` endpoint, render the index page with `renderSuspended`, verify todos from the mocked API appear in the DOM.
-- [ ] **T7. `mockNuxtImport` — useRuntimeConfig** — Mock `useRuntimeConfig` to return a custom `appTitle`, render the layout with `renderSuspended`, assert the headline shows the mocked title.
+- [x] **T6. `registerEndpoint` — index page** — Register a mock `/api/todos` endpoint, render the index page with `renderSuspended`, verify todos from the mocked API appear in the DOM.
+- [x] **T7. `mockNuxtImport` — useRuntimeConfig** — Mock `useRuntimeConfig` to return a custom `appTitle`, render the layout with `renderSuspended`, assert the headline shows the mocked title.
 - [ ] **T8. `mockNuxtImport` — useState (dark mode)** — Mock `useState` to control `isDark`, render `ActionBar` with `renderSuspended`, verify the correct theme styles are applied.
 - [ ] **T9. `mockComponent` — mock child component** — Render `TodoList` with `renderSuspended`, mock `TodoItem` via `mockComponent` to a simple stub, verify the list renders the correct number of stubs. Use `registerEndpoint` to provide data.
 - [ ] **T10. Route middleware** — Test `validate-todo-id` middleware: mock `navigateTo`/`abortNavigation` via `mockNuxtImport`, call the middleware with valid and invalid `id` params, assert correct behavior.
