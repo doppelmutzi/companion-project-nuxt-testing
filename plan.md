@@ -35,7 +35,7 @@ Pure unit tests that run in a `happy-dom` environment **without** any Nuxt conte
 
 These tests run inside a **full Nuxt environment** (`environment: 'nuxt'` in Vitest). Nuxt auto-imports, plugins, composables, and the Vue app context are all available — just like in the real app. This is what makes utilities like `mountSuspended` and `renderSuspended` possible: they mount components with async setup support, Pinia, route context, and injections already wired up. Use `registerEndpoint` to mock server API responses, `mockNuxtImport` to replace auto-imported composables, and `mockComponent` to stub child components. These tests are slower than unit tests (Nuxt must build once) but give much higher confidence that components work correctly within the framework.
 
-- [ ] **T4. `mountSuspended` — TodoItem** — Mount `TodoItem` with `mountSuspended`, verify it renders the label text and date. Verify the `<NuxtLink>` points to `/todos/:id`.
+- [x] **T4. `mountSuspended` — TodoItem** — Mount `TodoItem` with `mountSuspended`, verify it renders the label text and date. Verify the `<NuxtLink>` points to `/todos/:id`.
 - [ ] **T5. `renderSuspended` — ActionBar with Testing Library** — Use `renderSuspended` + `screen.getByText` to verify the action bar renders status text, filter buttons, and the "clear completed" link when todos are checked. Use `registerEndpoint` to mock `/api/todos`.
 - [x] **T6. `registerEndpoint` — index page** — Register a mock `/api/todos` endpoint, render the index page with `renderSuspended`, verify todos from the mocked API appear in the DOM.
 - [x] **T7. `mockNuxtImport` — useRuntimeConfig** — Mock `useRuntimeConfig` to return a custom `appTitle`, render the layout with `renderSuspended`, assert the headline shows the mocked title.

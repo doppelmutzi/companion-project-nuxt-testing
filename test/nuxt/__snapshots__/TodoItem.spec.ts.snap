@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TodoItem > matches snapshot for a checked todo 1`] = `
+"<div>
+  <div class="todo-item"><button class="check-button"><span class="check">✔️</span></button><a href="/todos/42" class="item-label is-crossed-out">Buy groceries <div>2026-02-13</div></a><button class="delete-button" style="display: none;">❌</button></div>
+</div>"
+`;
+
+exports[`TodoItem > matches snapshot for an unchecked todo 1`] = `
+"<div>
+  <div class="todo-item"><button class="check-button"><span class="check" style="display: none;">✔️</span></button><a href="/todos/42" class="item-label">Buy groceries <div>2026-02-13</div></a><button class="delete-button" style="display: none;">❌</button></div>
+</div>"
+`;
