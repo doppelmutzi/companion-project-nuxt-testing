@@ -28,7 +28,7 @@
 Pure unit tests that run in a `happy-dom` environment **without** any Nuxt context. Components are rendered with Vue Testing Library's `render()`, which uses `@vue/test-utils` under the hood. Nuxt auto-imports (like `useRuntimeConfig`, `useFetch`, `NuxtLink`) are **not** available — so these tests are best suited for simple components, composable logic, and store logic where you control all dependencies via props or mocks (`vi.fn`). They are the fastest to run and easiest to debug.
 
 - [x] **T1. Headline renders text** — Render `Headline` with Vue Testing Library `render()`, assert text appears. _(already done)_
-- [ ] **T2. Pinia store logic** — Test `useTodosStore` in isolation: `addTodo`, `toggleCheckTodo`, `removeTodo`, `clearCheckedTodos`, `filteredTodos` getter, `todosLeft` computed. Mock `$fetch` with `vi.fn`.
+- [x] **T2. Pinia store logic** — Test `useTodosStore` in isolation: `addTodo`, `toggleCheckTodo`, `removeTodo`, `clearCheckedTodos`, `filteredTodos` getter, `todosLeft` computed. Mock `$fetch` with `vi.fn`.
 - [ ] **T3. `useDarkMode` composable** — Test `isDark` initial value, `toggleDarkMode` flips it, `theme` computed returns correct config.
 
 ### Nuxt runtime tests (`@nuxt/test-utils/runtime`, `test/nuxt/`)

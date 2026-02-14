@@ -9,21 +9,21 @@ export default defineConfig({
         plugins: [vue()],
         test: {
           name: 'unit',
-          include: ['test/unit/**/*.{test,spec}.ts'],
+          include: ['test/unit/**/*.test.ts'],
           environment: 'happy-dom',
         },
       },
       {
         test: {
           name: 'e2e',
-          include: ['test/e2e/**/*.{test,spec}.ts'],
+          include: ['test/e2e/**/*.test.ts'],
           environment: 'node',
         },
       },
       await defineVitestProject({
         test: {
           name: 'nuxt',
-          include: ['app/**/*.{test,spec}.ts', 'test/nuxt/**/*.{test,spec}.ts'],
+          include: ['app/**/*.test.ts', 'test/nuxt/**/*.test.ts'],
           environment: 'nuxt',
           setupFiles: './vitest.setup.ts',
           environmentOptions: {
