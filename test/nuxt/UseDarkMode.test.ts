@@ -28,7 +28,6 @@
  */
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
 import themeConfig from "~/utils/theme";
 
 // vi.hoisted creates the mock ref before mockNuxtImport's factory runs.

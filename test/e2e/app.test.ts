@@ -13,7 +13,7 @@
  * interaction testing (clicking, typing, navigating). url() returns the base URL
  * of the test server.
  */
-import { $fetch, createPage, setup, url } from '@nuxt/test-utils/e2e'
+import { $fetch, setup } from '@nuxt/test-utils/e2e'
 import { describe, expect, it } from 'vitest'
 
 describe('app', async () => {

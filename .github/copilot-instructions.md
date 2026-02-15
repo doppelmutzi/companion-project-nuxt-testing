@@ -30,6 +30,7 @@
 
 ## Conventions & patterns
 - Consolidate imports from the same module into a single `import` statement (e.g., `import { a, b } from "mod"` instead of two separate imports).
+- Do **not** leave unused imports in the code. Remove any import that is not referenced in the file.
 - Vue SFCs use `<script setup lang="ts">` and SCSS (`<style lang="scss">`). Do **not** use `scoped` styles.
 - Components pass callbacks as props named `onClick` (kebab-cased in templates as `:on-click`), e.g., `ClearButton.vue` and `DeleteButton.vue`.
 - Prefer computed state for derived view text (example: `Status.vue`).
