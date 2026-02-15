@@ -29,7 +29,7 @@ Pure unit tests that run in a `happy-dom` environment **without** any Nuxt conte
 
 - [x] **T1. Headline renders text** — Render `Headline` with Vue Testing Library `render()`, assert text appears. _(already done)_
 - [x] **T2. Pinia store logic** — Test `useTodosStore` in isolation: `addTodo`, `toggleCheckTodo`, `removeTodo`, `clearCheckedTodos`, `filteredTodos` getter, `todosLeft` computed. Mock `$fetch` with `vi.fn`.
-- [ ] **T3. `useDarkMode` composable** — Test `isDark` initial value, `toggleDarkMode` flips it, `theme` computed returns correct config.
+- [x] **T3. `useDarkMode` composable** — Test `isDark` initial value, `toggleDarkMode` flips it, `theme` computed returns correct config.
 
 ### Nuxt runtime tests (`@nuxt/test-utils/runtime`, `test/nuxt/`)
 
