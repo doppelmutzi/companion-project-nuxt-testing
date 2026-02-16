@@ -8,7 +8,7 @@
 - [x] **4. `<NuxtLink>` in TodoItem** — Wrap the todo label in `app/components/TodoItem.vue` with `<NuxtLink>` for navigation to the detail page.
 - [x] **5. Default layout** — Create `app/layouts/default.vue` with `Headline` wrapped in a `<NuxtLink to="/">` so it serves as shared header and home navigation for all routes (index and todo detail). Update `app/app.vue` to use `<NuxtLayout>` wrapping `<NuxtPage />`. Remove the per-page `<Headline>` from `index.vue` and the "← Back to list" link from `[id].vue`.
 - [x] **6. `useState` for dark mode** — Create `app/composables/useDarkMode.ts` using `useState('darkMode', () => false)`. Replace the theme field in the Pinia store with this composable. Wire it into `ActionBar` and `FilterButton`.
-- [ ] **11. Route middleware** — Add a named middleware `app/middleware/validate-todo-id.ts` that validates the `id` param on the detail route (e.g., reject non-numeric IDs with `abortNavigation`). Apply it via `definePageMeta` in `app/pages/todos/[id].vue`.
+- [x] **11. Route middleware** — Add a named middleware `app/middleware/validate-todo-id.ts` that validates the `id` param on the detail route (e.g., reject non-numeric IDs with `abortNavigation`). Apply it via `definePageMeta` in `app/pages/todos/[id].vue`.
 - [ ] **12. Custom `error.vue`** — Create `app/error.vue` to display a styled error page (404 and generic) with a "Back to home" `<NuxtLink>`. Replace the default Nuxt error screen.
 
 

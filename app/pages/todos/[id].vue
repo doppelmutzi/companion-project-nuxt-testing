@@ -17,6 +17,10 @@
 <script setup lang="ts">
 import type { Todo } from "@/stores/todos";
 
+definePageMeta({
+  middleware: ["validate-todo-id"] as const,
+});
+
 const route = useRoute();
 const todoId = Number(route.params.id);
 
