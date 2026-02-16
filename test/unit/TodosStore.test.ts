@@ -1,3 +1,4 @@
+// Showcases: createPinia + setActivePinia (Pinia store sync logic)
 /**
  * Showcases: Testing Pinia store synchronous logic in a pure unit test.
  *

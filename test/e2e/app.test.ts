@@ -1,3 +1,4 @@
+// Showcases: setup + $fetch (SSR smoke test)
 /**
  * Showcases: E2E testing with @nuxt/test-utils — real Nuxt server + $fetch.
  *

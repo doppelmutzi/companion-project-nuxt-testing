@@ -1,3 +1,4 @@
+// Showcases: mockNuxtImport (useState) + vi.hoisted
 /**
  * Showcases: Testing a Nuxt composable with mockNuxtImport.
  *

@@ -1,3 +1,4 @@
+// Showcases: render (Vue Testing Library)
 /**
  * Showcases: Pure unit test with Vue Testing Library (no Nuxt context).
  *

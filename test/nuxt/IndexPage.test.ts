@@ -1,3 +1,4 @@
+// Showcases: registerEndpoint + renderSuspended
 /**
  * Showcases: registerEndpoint to mock Nuxt server API routes.
  *

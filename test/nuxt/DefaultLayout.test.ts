@@ -1,3 +1,4 @@
+// Showcases: mockNuxtImport (useRuntimeConfig) + renderSuspended + screen.getByText
 /**
  * Showcases: mockNuxtImport and renderSuspended with Testing Library.
  *

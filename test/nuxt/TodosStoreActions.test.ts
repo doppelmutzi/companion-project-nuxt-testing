@@ -1,3 +1,4 @@
+// Showcases: registerEndpoint (method matching) + Pinia store async actions
 /**
  * Showcases: Testing Pinia store async actions in the Nuxt test environment.
  *

@@ -1,3 +1,4 @@
+// Showcases: mountSuspended + snapshot testing
 /**
  * Showcases: mountSuspended, findComponent, class assertions, and snapshot testing.
  *
