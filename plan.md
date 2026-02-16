@@ -39,7 +39,7 @@ These tests run inside a **full Nuxt environment** (`environment: 'nuxt'` in Vit
 - [x] **T5. `registerEndpoint` — index page** — Register a mock `/api/todos` endpoint, render the index page with `renderSuspended`, verify todos from the mocked API appear in the DOM.
 - [x] **T6. `mockNuxtImport` — useRuntimeConfig** — Mock `useRuntimeConfig` to return a custom `appTitle`, render the layout with `renderSuspended`, assert the headline shows the mocked title.
 - [ ] **T7. `mockComponent` — mock child component** — Render `TodoList` with `renderSuspended`, mock `TodoItem` via `mockComponent` to a simple stub, verify the list renders the correct number of stubs. Use `registerEndpoint` to provide data.
-- [ ] **T8. Route middleware** — Test `validate-todo-id` middleware: mock `navigateTo`/`abortNavigation` via `mockNuxtImport`, call the middleware with valid and invalid `id` params, assert correct behavior.
+- [x] **T8. Route middleware** — Test `validate-todo-id` middleware: mock `navigateTo`/`abortNavigation` via `mockNuxtImport`, call the middleware with valid and invalid `id` params, assert correct behavior.
 - [ ] **T9. Detail page 404** — Use `renderSuspended` with a route pointing to a non-existent todo ID. Register an endpoint returning 404. Verify `createError` is thrown or the error page renders.
 
 ### E2E tests (`@nuxt/test-utils/e2e`, `test/e2e/`)
