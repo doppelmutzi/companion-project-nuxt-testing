@@ -8,7 +8,8 @@
     "test": "vitest",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.11.3",
@@ -26,6 +27,7 @@
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^20.5.0",
     "playwright-core": "^1.58.2",
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "vue-tsc": "^3.2.6"
   }
 }

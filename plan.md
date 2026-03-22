@@ -47,5 +47,5 @@ These tests run inside a **full Nuxt environment** (`environment: 'nuxt'` in Vit
 End-to-end tests boot a **real Nuxt server** (via `setup()`) and interact with it over HTTP or through a browser. The `$fetch` helper makes HTTP requests against the running server — great for testing SSR output and API routes directly. The `createPage` helper launches a real Playwright browser to simulate user interactions (clicking, typing, navigating). These tests run the full stack: server routes, SSR rendering, client-side hydration, and browser behavior. They are the slowest but give the highest confidence that everything works together in production-like conditions.
 
 - [x] **T10. SSR smoke test** — Fetch `/` with `$fetch`, assert HTML contains the todo input. _(already done)_
-- [ ] **T11. Server API routes** — Test each API endpoint (`GET`, `POST`, `PATCH`, `DELETE`) via `$fetch` against the running Nuxt server. Verify correct status codes and response bodies.
+- [x] **T11. Server API routes** — Test each API endpoint (`GET`, `POST`, `PATCH`, `DELETE`) via `$fetch` against the running Nuxt server. Verify correct status codes and response bodies.
 - [ ] **T12. Full navigation flow** — Use `createPage` (Playwright) to add a todo, click the `<NuxtLink>` to the detail page, verify the detail content, then click the headline to navigate back home.
