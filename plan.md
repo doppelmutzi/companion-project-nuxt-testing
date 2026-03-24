@@ -41,11 +41,13 @@ These tests run inside a **full Nuxt environment** (`environment: 'nuxt'` in Vit
 - [x] **T7. `mockComponent` — mock child component** — Render `TodoList` with `renderSuspended`, mock `TodoItem` via `mockComponent` to a simple stub, verify the list renders the correct number of stubs. Use `registerEndpoint` to provide data.
 - [x] **T8. Route middleware** — Test `validate-todo-id` middleware: mock `navigateTo`/`abortNavigation` via `mockNuxtImport`, call the middleware with valid and invalid `id` params, assert correct behavior.
 - [x] **T9. Detail page 404** — Use `renderSuspended` with a route pointing to a non-existent todo ID. Register an endpoint returning 404. Verify `createError` is thrown or the error page renders.
+- [ ] **T10. User interaction — TodoInput** — Render the index page with `renderSuspended`, register a mock `/api/todos` endpoint (GET + POST). Use `userEvent.type()` and `userEvent.keyboard('{Enter}')` to add a new todo, assert it appears in the list. Demonstrates user event handling and store action triggering in the Nuxt test environment.
+- [ ] **T11. Detail page happy path** — Register a mock `/api/todos/:id` endpoint returning a specific todo. Use `renderSuspended` with a matching dynamic route. Assert the todo's title and date are rendered. Optionally verify the `<title>` set via `useHead`.
 
 ### E2E tests (`@nuxt/test-utils/e2e`, `test/e2e/`)
 
 End-to-end tests boot a **real Nuxt server** (via `setup()`) and interact with it over HTTP or through a browser. The `$fetch` helper makes HTTP requests against the running server — great for testing SSR output and API routes directly. The `createPage` helper launches a real Playwright browser to simulate user interactions (clicking, typing, navigating). These tests run the full stack: server routes, SSR rendering, client-side hydration, and browser behavior. They are the slowest but give the highest confidence that everything works together in production-like conditions.
 
-- [x] **T10. SSR smoke test** — Fetch `/` with `$fetch`, assert HTML contains the todo input. _(already done)_
-- [x] **T11. Server API routes** — Test each API endpoint (`GET`, `POST`, `PATCH`, `DELETE`) via `$fetch` against the running Nuxt server. Verify correct status codes and response bodies.
-- [ ] **T12. Full navigation flow** — Use `createPage` (Playwright) to add a todo, click the `<NuxtLink>` to the detail page, verify the detail content, then click the headline to navigate back home.
+- [x] **T12. SSR smoke test** — Fetch `/` with `$fetch`, assert HTML contains the todo input. _(already done)_
+- [x] **T13. Server API routes** — Test each API endpoint (`GET`, `POST`, `PATCH`, `DELETE`) via `$fetch` against the running Nuxt server. Verify correct status codes and response bodies.
+- [x] **T14. Full navigation flow** — Use `createPage` (Playwright) to add a todo, click the `<NuxtLink>` to the detail page, verify the detail content, then click the headline to navigate back home.

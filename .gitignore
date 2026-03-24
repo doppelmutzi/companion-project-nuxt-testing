@@ -22,6 +22,9 @@ logs
 # SQLite
 db.sqlite3*
 
+# Playwright test artifacts
+test-results/
+
 # Local env files
 .env
 .env.*
