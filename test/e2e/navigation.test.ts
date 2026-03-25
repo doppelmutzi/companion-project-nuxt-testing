@@ -59,13 +59,6 @@ describe('navigation flow', async () => {
     await page?.close()
   })
 
-  it('intentionally failing test to demonstrate failure screenshot', async () => {
-    await page.goto(url('/'), { waitUntil: 'domcontentloaded' })
-    await page.waitForSelector('.todo-input input')
-    // This assertion always fails — check test-results/ for the screenshot.
-    expect('actual').toBe('expected')
-  })
-
   it('adds a todo, navigates to detail page, then back home via headline', async () => {
     // Navigate to home; domcontentloaded is sufficient — waitForSelector below
     // handles the rest once Vue has mounted the input.

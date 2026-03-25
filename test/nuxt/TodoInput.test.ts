@@ -1,37 +1,50 @@
-// Showcases: user interaction (VTU setValue/trigger) + registerEndpoint + mountSuspended
+// Showcases: user interaction — VTU (setValue/trigger) vs userEvent API
 /**
- * Showcases: Testing user input and store mutation in the Nuxt test environment.
+ * Showcases: Two approaches to simulating user input in the Nuxt test environment.
  *
- * This test exercises the full interaction chain:
+ * Both tests exercise the same interaction chain:
  *   DOM event (keyup.enter) → Vue handler (onEnter) → store.addTodo()
  *   → $fetch POST /api/todos → Pinia state update → re-render
  *
- * Why mountSuspended instead of renderSuspended for interaction tests?
- * renderSuspended wraps @testing-library/vue's render() and returns a Testing
- * Library RenderResult — great for assertion via screen queries, but it does
- * not expose VTU's wrapper API (setValue, trigger). mountSuspended returns a
- * full VTU VueWrapper, giving access to both wrapper methods for triggering
- * events and screen queries for asserting the outcome.
+ * Approach 1 — VTU (mountSuspended):
+ * mountSuspended returns a VTU VueWrapper. setValue() sets the element's value
+ * AND fires input/change events (keeping v-model in sync). trigger('keyup',
+ * { key: 'Enter' }) dispatches a keyup event whose evt.target.value already
+ * reflects the value written by setValue — exactly what onEnter() reads.
+ * Assertions use wrapper.text() because mountSuspended renders into a detached
+ * container outside document.body, so Testing Library's screen cannot see it.
  *
- * Why setValue + trigger instead of fireEvent?
- * onEnter() reads from evt.target.value directly (not from the v-model ref).
- * VTU's setValue() sets the underlying DOM element's value AND dispatches
- * the input/change events that Vue uses to sync v-model. Calling
- * trigger('keyup', { key: 'Enter' }) then fires a keyup event whose
- * evt.target.value reflects the value already written by setValue — exactly
- * what onEnter() needs.
+ * Approach 2 — userEvent (renderSuspended):
+ * renderSuspended wraps @testing-library/vue's render(), which attaches its
+ * output to document.body. This makes screen queries and userEvent (which also
+ * operates on document.body elements) work correctly together.
+ * userEvent.setup() creates a session that simulates real browser input:
+ *   - user.type() fires keydown/keypress/input/keyup for every character,
+ *     updating the element's value and Vue's v-model incrementally.
+ *   - user.keyboard('{Enter}') fires a full keydown/keypress/keyup sequence for
+ *     Enter on the currently focused element, triggering @keyup.enter.
+ * This is more realistic than VTU's trigger() because it simulates the full
+ * browser event pipeline rather than dispatching a single synthetic event.
  *
- * Why flushPromises?
- * store.addTodo() is async — it calls $fetch POST /api/todos and awaits the
- * response before pushing the returned todo into state. Without flushPromises(),
- * the assertion would run before the store update and re-render complete.
- * flushPromises() drains the microtask queue so all pending promises resolve
- * before we assert.
+ * Why flushPromises (both tests)?
+ * store.addTodo() awaits $fetch POST /api/todos before updating state.
+ * flushPromises() drains the microtask queue so the store and re-render
+ * complete before assertions run.
+ *
+ * Why clearNuxtData in beforeEach?
+ * Nuxt's useFetch deduplicates requests by key across the Nuxt instance lifetime.
+ * Without clearNuxtData(), the second test's renderSuspended(IndexPage) would
+ * replay the cached async data from the first mount — potentially returning stale
+ * data and overwriting the Pinia store reset. clearNuxtData() forces useFetch to
+ * re-fetch from the registered GET endpoint, which returns [].
  */
-import { registerEndpoint, mountSuspended } from "@nuxt/test-utils/runtime";
+import { registerEndpoint, mountSuspended, renderSuspended } from "@nuxt/test-utils/runtime";
+import { screen } from "@testing-library/vue";
+import userEvent from "@testing-library/user-event";
 import { flushPromises } from "@vue/test-utils";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import IndexPage from "~/pages/index.vue";
+import { useTodosStore } from "~/stores/todos";
 
 const newTodo = {
   id: 99,
@@ -53,7 +66,19 @@ registerEndpoint("/api/todos", {
   handler: () => newTodo,
 });
 
-describe("TodoInput — user interaction", () => {
+beforeEach(() => {
+  // Clear ALL Nuxt async data so that each renderSuspended call re-fetches
+  // from the registered GET endpoint instead of replaying a cached response.
+  // clearNuxtData(key) requires the exact key Nuxt generated internally for
+  // the useFetch call — which differs from the raw URL — so we clear all.
+  clearNuxtData();
+  // Reset Pinia state independently — clearNuxtData only affects useFetch's
+  // cache; the store itself (mutated by addTodo in the previous test) must
+  // be reset manually.
+  useTodosStore().setTodos([]);
+});
+
+describe("TodoInput — VTU approach (mountSuspended)", () => {
   it("adds a new todo when the user types a label and presses Enter", async () => {
     const wrapper = await mountSuspended(IndexPage);
 
@@ -66,13 +91,40 @@ describe("TodoInput — user interaction", () => {
     // event.key = "Enter", activating Vue's @keyup.enter handler (onEnter).
     await wrapper.find("input").trigger("keyup", { key: "Enter" });
 
-    // Drain the microtask queue: store.addTodo() awaits $fetch POST /api/todos,
-    // which resolves via the registered mock above. After this, Pinia state
-    // holds the returned todo and Vue has re-rendered the todo list.
     await flushPromises();
 
-    // Assert via the VTU wrapper — the todo label from the POST response is
-    // now in the DOM rendered by TodoList → TodoItem → NuxtLink.
+    // mountSuspended renders into a detached container — use wrapper.text()
+    // rather than screen queries.
     expect(wrapper.text()).toContain("Learn Nuxt testing");
+  });
+});
+
+describe("TodoInput — userEvent approach (renderSuspended)", () => {
+  it("adds a new todo when the user types a label and presses Enter", async () => {
+    // renderSuspended attaches to document.body, so both screen queries and
+    // userEvent (which also targets document.body) work correctly together.
+    await renderSuspended(IndexPage);
+
+    const user = userEvent.setup();
+
+    // screen.getByRole("textbox") locates the <input> by its implicit ARIA
+    // role — the same query a screen reader would use. This is the Testing
+    // Library idiomatic approach: query by what users and assistive technology
+    // perceive, not by CSS selectors or tag names.
+    //
+    // user.type() fires the full event sequence for each character
+    // (keydown → keypress → input → keyup), updating input.value and
+    // Vue's v-model incrementally — just like a real user typing.
+    await user.type(screen.getByRole("textbox"), "Learn Nuxt testing");
+
+    // user.keyboard('{Enter}') fires keydown + keypress + keyup for Enter on
+    // the currently focused element, triggering Vue's @keyup.enter handler.
+    await user.keyboard("{Enter}");
+
+    await flushPromises();
+
+    // screen.getByText() locates the rendered todo label in the DOM — the
+    // text that a sighted user would see after adding the todo.
+    expect(screen.getByText("Learn Nuxt testing")).toBeDefined();
   });
 });
