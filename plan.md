@@ -42,7 +42,7 @@ These tests run inside a **full Nuxt environment** (`environment: 'nuxt'` in Vit
 - [x] **T8. Route middleware** — Test `validate-todo-id` middleware: mock `navigateTo`/`abortNavigation` via `mockNuxtImport`, call the middleware with valid and invalid `id` params, assert correct behavior.
 - [x] **T9. Detail page 404** — Use `renderSuspended` with a route pointing to a non-existent todo ID. Register an endpoint returning 404. Verify `createError` is thrown or the error page renders.
 - [x] **T10. User interaction — TodoInput** — Render the index page with `renderSuspended`, register a mock `/api/todos` endpoint (GET + POST). Use `userEvent.type()` and `userEvent.keyboard('{Enter}')` to add a new todo, assert it appears in the list. Demonstrates user event handling and store action triggering in the Nuxt test environment.
-- [ ] **T11. Detail page happy path** — Register a mock `/api/todos/:id` endpoint returning a specific todo. Use `renderSuspended` with a matching dynamic route. Assert the todo's title and date are rendered. Optionally verify the `<title>` set via `useHead`.
+- [x] **T11. Detail page happy path** — Register a mock `/api/todos/:id` endpoint returning a specific todo. Use `renderSuspended` with a matching dynamic route. Assert the todo's title and date are rendered. Also verify the `<title>` set via `useHead`.
 
 ### E2E tests (`@nuxt/test-utils/e2e`, `test/e2e/`)
 
