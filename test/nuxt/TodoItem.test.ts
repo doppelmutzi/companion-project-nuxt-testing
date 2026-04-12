@@ -17,7 +17,8 @@
  *    to detect unintended changes across both checked and unchecked states
  */
 import { mountSuspended } from "@nuxt/test-utils/runtime";
-import { describe, expect, it } from "vitest";
+import { mount } from "@vue/test-utils";
+import { describe, expect, it, vi } from "vitest";
 import TodoItem from "~/components/TodoItem.vue";
 
 const mockTodo = {
@@ -94,5 +95,32 @@ describe("TodoItem", () => {
     });
 
     expect(wrapper.html()).toMatchSnapshot();
+  });
+});
+
+// This test intentionally uses plain mount() to demonstrate what breaks without
+// mountSuspended. Because this file runs inside the nuxt Vitest project,
+// Pinia is available so the component mounts without throwing — but NuxtLink
+// internally depends on RouterLink (from Vue Router), which is not registered
+// in a bare mount() app. Vue emits a warning and renders NuxtLink as an
+// unresolvable stub, so findComponent({ name: "NuxtLink" }) returns an empty
+// wrapper and the link assertion fails.
+describe("mount() without Nuxt runtime (intentionally broken — shows the error)", () => {
+  it("emits a RouterLink warning and cannot locate NuxtLink as a real component", () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    const wrapper = mount(TodoItem, { props: { todo: mockTodo } });
+
+    // Vue warns that RouterLink (NuxtLink's internal dependency) could not be resolved
+    const warned = warnSpy.mock.calls.some((args) =>
+      String(args[0]).includes("Failed to resolve component: RouterLink")
+    );
+    expect(warned).toBe(true);
+
+    // Without the router plugin, NuxtLink cannot resolve RouterLink and renders
+    // a bare <a> with no href — the link is visually present but non-functional
+    expect(wrapper.html()).not.toContain('href="/todos/42"');
+
+    warnSpy.mockRestore();
   });
 });
