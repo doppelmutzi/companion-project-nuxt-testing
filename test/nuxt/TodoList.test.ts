@@ -56,7 +56,8 @@ registerEndpoint("/api/todos", () => mockTodos);
 // The data-testid makes each stub easily queryable by the test assertions
 // without coupling them to TodoItem's internal markup.
 mockComponent("~/components/TodoItem.vue", {
-  template: '<div data-testid="todo-item-stub" />',
+  props: ["todo"],
+  template: '<div data-testid="todo-item-stub" :todo-label="todo?.label" />',
 });
 
 describe("TodoList", () => {
@@ -73,5 +74,6 @@ describe("TodoList", () => {
 
     const stubs = screen.getAllByTestId("todo-item-stub");
     expect(stubs).toHaveLength(mockTodos.length);
+    expect(stubs).toMatchSnapshot();
   });
 });
