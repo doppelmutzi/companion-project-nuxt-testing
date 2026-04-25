@@ -28,7 +28,7 @@
  * testing guide.
  */
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import themeConfig from "~/utils/theme";
 
 // vi.hoisted creates the mock ref before mockNuxtImport's factory runs.
@@ -59,7 +59,7 @@ describe("useDarkMode", () => {
   // isDark should reflect the value from useState. Since our mock returns
   // a ref initialized to true, this matches the composable's default of
   // useState('darkMode', () => true).
-  it("has isDark set to true by default", () => {
+  test("has isDark set to true by default", () => {
     const { isDark } = useDarkMode();
 
     expect(isDark.value).toBe(true);
@@ -67,7 +67,7 @@ describe("useDarkMode", () => {
 
   // toggleDarkMode flips isDark.value. Because useState returns a shared ref,
   // the toggle mutates the same ref — we verify the reactive update.
-  it("toggles isDark when toggleDarkMode is called", () => {
+  test("toggles isDark when toggleDarkMode is called", () => {
     const { isDark, toggleDarkMode } = useDarkMode();
 
     toggleDarkMode();
@@ -79,14 +79,14 @@ describe("useDarkMode", () => {
 
   // theme is a computed derived from isDark. When isDark is true, it should
   // return the DARK theme config object.
-  it("returns DARK theme config when isDark is true", () => {
+  test("returns DARK theme config when isDark is true", () => {
     const { theme } = useDarkMode();
 
     expect(theme.value).toEqual(themeConfig.DARK);
   });
 
   // After toggling to false, the computed reactively switches to LIGHT.
-  it("returns LIGHT theme config when isDark is false", () => {
+  test("returns LIGHT theme config when isDark is false", () => {
     const { theme, toggleDarkMode } = useDarkMode();
 
     toggleDarkMode();

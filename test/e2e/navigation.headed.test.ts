@@ -20,7 +20,7 @@
  * See navigation.test.ts for the canonical headless version.
  */
 import { createPage, setup, url } from '@nuxt/test-utils/e2e'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 describe('navigation flow (headed browser)', async () => {
   await setup({
@@ -31,7 +31,7 @@ describe('navigation flow (headed browser)', async () => {
     },
   })
 
-  it('adds a todo, navigates to detail page, then back home via headline', async () => {
+  test('adds a todo, navigates to detail page, then back home via headline', async () => {
     const page = await createPage()
     await page.goto(url('/'), { waitUntil: 'domcontentloaded' })
 

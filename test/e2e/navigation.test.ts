@@ -25,7 +25,7 @@
 import { createPage, setup, url } from '@nuxt/test-utils/e2e'
 import type { NuxtPage } from '@nuxt/test-utils/e2e'
 import { mkdirSync } from 'node:fs'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 
 describe('navigation flow', async () => {
   await setup({ browser: true })
@@ -59,7 +59,7 @@ describe('navigation flow', async () => {
     await page?.close()
   })
 
-  it('adds a todo, navigates to detail page, then back home via headline', async () => {
+  test('adds a todo, navigates to detail page, then back home via headline', async () => {
     // Navigate to home; domcontentloaded is sufficient — waitForSelector below
     // handles the rest once Vue has mounted the input.
     await page.goto(url('/'), { waitUntil: 'domcontentloaded' })

@@ -42,7 +42,7 @@ import { registerEndpoint, mountSuspended, renderSuspended } from "@nuxt/test-ut
 import { screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { flushPromises } from "@vue/test-utils";
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, test, beforeEach } from "vitest";
 import IndexPage from "~/pages/index.vue";
 import { useTodosStore } from "~/stores/todos";
 
@@ -79,7 +79,7 @@ beforeEach(() => {
 });
 
 describe("TodoInput — VTU approach (mountSuspended)", () => {
-  it("adds a new todo when the user types a label and presses Enter", async () => {
+  test("adds a new todo when the user types a label and presses Enter", async () => {
     const wrapper = await mountSuspended(IndexPage);
 
     // setValue sets the DOM element's value AND fires input/change events so
@@ -100,7 +100,7 @@ describe("TodoInput — VTU approach (mountSuspended)", () => {
 });
 
 describe("TodoInput — userEvent approach (renderSuspended)", () => {
-  it("adds a new todo when the user types a label and presses Enter", async () => {
+  test("adds a new todo when the user types a label and presses Enter", async () => {
     // renderSuspended attaches to document.body, so both screen queries and
     // userEvent (which also targets document.body) work correctly together.
     await renderSuspended(IndexPage);

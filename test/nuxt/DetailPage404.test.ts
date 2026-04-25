@@ -20,7 +20,7 @@
 import { registerEndpoint, renderSuspended } from "@nuxt/test-utils/runtime";
 import { screen } from "@testing-library/vue";
 import type { NuxtError } from "#app";
-import { describe, expect, it } from "vitest";
+import { describe, expect, test } from "vitest";
 import DetailPage from "~/pages/todos/[id].vue";
 import ErrorPage from "~/error.vue";
 
@@ -29,7 +29,7 @@ import ErrorPage from "~/error.vue";
 registerEndpoint("/api/todos/999", () => null);
 
 describe("Detail Page - Todo not found", () => {
-  it("throws a 404 when the todo does not exist", async () => {
+  test("throws a 404 when the todo does not exist", async () => {
     await expect(
       renderSuspended(DetailPage, {
         route: "/todos/999",
@@ -39,7 +39,7 @@ describe("Detail Page - Todo not found", () => {
 });
 
 describe("Error Page", () => {
-  it("renders status code, message, and back to home button", async () => {
+  test("renders status code, message, and back to home button", async () => {
     await renderSuspended(ErrorPage, {
       props: {
         error: { status: 404, message: "Todo with id 999 not found" } as NuxtError,

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`TodoList > renders one stub per todo seeded into the store 1`] = `
+exports[`TodoList (global.stubs) > renders one stub per todo seeded into the store 1`] = `
 [
   <div
     data-testid="todo-item-stub"

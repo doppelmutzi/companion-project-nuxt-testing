@@ -18,7 +18,7 @@
  */
 import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { mount } from "@vue/test-utils";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { createMemoryHistory, createRouter } from "vue-router";
 import TodoItem from "~/components/TodoItem.vue";
 
@@ -32,7 +32,7 @@ const mockTodo = {
 describe("TodoItem", () => {
   /* Basic content assertion: mount the component with props and verify that
    * the rendered text includes the todo's label and date strings. */
-  it("renders the todo label and date", async () => {
+  test("renders the todo label and date", async () => {
     const wrapper = await mountSuspended(TodoItem, {
       props: { todo: mockTodo },
     });
@@ -47,7 +47,7 @@ describe("TodoItem", () => {
    * this requires the router context that mountSuspended provides. With plain
    * mount(), the "to" prop arrives correctly but no href is rendered because
    * Vue Router is not registered, leaving the link non-functional. */
-  it("renders a NuxtLink pointing to /todos/:id", async () => {
+  test("renders a NuxtLink pointing to /todos/:id", async () => {
     const wrapper = await mountSuspended(TodoItem, {
       props: { todo: mockTodo },
     });
@@ -61,7 +61,7 @@ describe("TodoItem", () => {
   /* classes() returns the CSS class list of the wrapper element.
    * This tests that the component applies a conditional class based on prop state —
    * a common Vue pattern using :class bindings. */
-  it("applies is-crossed-out class when todo is checked", async () => {
+  test("applies is-crossed-out class when todo is checked", async () => {
     const wrapper = await mountSuspended(TodoItem, {
       props: { todo: { ...mockTodo, checked: true } },
     });
@@ -71,7 +71,7 @@ describe("TodoItem", () => {
   });
 
   /* Inverse of the above: verifies the class is absent for unchecked todos. */
-  it("does not apply is-crossed-out class when todo is unchecked", async () => {
+  test("does not apply is-crossed-out class when todo is unchecked", async () => {
     const wrapper = await mountSuspended(TodoItem, {
       props: { todo: mockTodo },
     });
@@ -83,7 +83,7 @@ describe("TodoItem", () => {
   /* Snapshot testing: wrapper.html() returns the full rendered HTML string.
    * toMatchSnapshot() saves it to a __snapshots__ file on first run and compares
    * against it on subsequent runs. This catches any unintended markup changes. */
-  it("matches snapshot for an unchecked todo", async () => {
+  test("matches snapshot for an unchecked todo", async () => {
     const wrapper = await mountSuspended(TodoItem, {
       props: { todo: mockTodo },
     });
@@ -93,7 +93,7 @@ describe("TodoItem", () => {
 
   /* A second snapshot for the checked state ensures both visual variants
    * are captured. If the crossed-out styling or markup changes, this will flag it. */
-  it("matches snapshot for a checked todo", async () => {
+  test("matches snapshot for a checked todo", async () => {
     const wrapper = await mountSuspended(TodoItem, {
       props: { todo: { ...mockTodo, checked: true } },
     });
@@ -110,7 +110,7 @@ describe("TodoItem", () => {
  * unresolvable stub, so findComponent({ name: "NuxtLink" }) returns an empty
  * wrapper and the link assertion fails. */
 describe("mount() without Nuxt runtime (intentionally broken — shows the error)", () => {
-  it("emits a RouterLink warning and cannot locate NuxtLink as a real component", () => {
+  test("emits a RouterLink warning and cannot locate NuxtLink as a real component", () => {
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
     const wrapper = mount(TodoItem, { props: { todo: mockTodo } });
@@ -135,7 +135,7 @@ describe("mount() without Nuxt runtime (intentionally broken — shows the error
    * a minimal stand-in here means diverging from production config and maintaining
    * parallel setup code just to make the test environment resemble what Nuxt
    * already provides for free via mountSuspended. */
-  it("resolves the href correctly when a router is provided manually", () => {
+  test("resolves the href correctly when a router is provided manually", () => {
     const router = createRouter({
       history: createMemoryHistory(),
       routes: [

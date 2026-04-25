@@ -32,7 +32,7 @@
  * file-based routing works (todos.get.ts, todos.post.ts, etc.).
  */
 import { registerEndpoint } from "@nuxt/test-utils/runtime";
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, test, beforeEach } from "vitest";
 import { useTodosStore, type Todo } from "~/stores/todos";
 
 // Sample data used across tests.
@@ -88,7 +88,7 @@ describe("useTodosStore — async actions", () => {
     // addTodo calls $fetch with POST /api/todos. The registerEndpoint mock
     // returns a todo with id: 99. The store pushes this server response into
     // its local array — we verify the new todo appears with the server-assigned id.
-    it("adds the todo returned by the server to the store", async () => {
+    test("adds the todo returned by the server to the store", async () => {
       const store = useTodosStore();
 
       await store.addTodo(todo1);
@@ -103,7 +103,7 @@ describe("useTodosStore — async actions", () => {
     // toggleCheckTodo calls $fetch with PATCH /api/todos/:id. The mock for
     // /api/todos/1 returns todo1 with checked: true. The store immutably
     // replaces the todo at the matching index.
-    it("toggles the checked state of a todo", async () => {
+    test("toggles the checked state of a todo", async () => {
       const store = useTodosStore();
       expect(store.todos[0]!.checked).toBe(false);
 
@@ -116,7 +116,7 @@ describe("useTodosStore — async actions", () => {
   describe("removeTodo", () => {
     // removeTodo calls $fetch with DELETE /api/todos/:id. The mock for
     // /api/todos/2 returns null. The store filters the todo out of the array.
-    it("removes the todo from the store", async () => {
+    test("removes the todo from the store", async () => {
       const store = useTodosStore();
 
       await store.removeTodo(todo2);
@@ -129,7 +129,7 @@ describe("useTodosStore — async actions", () => {
   describe("clearCheckedTodos", () => {
     // clearCheckedTodos calls $fetch with DELETE /api/todos (bulk).
     // The store filters out all checked todos from its local array.
-    it("removes all checked todos from the store", async () => {
+    test("removes all checked todos from the store", async () => {
       const store = useTodosStore();
 
       await store.clearCheckedTodos();
@@ -143,7 +143,7 @@ describe("useTodosStore — async actions", () => {
     // toggleTodos calls $fetch with PATCH /api/todos (bulk toggle).
     // The mock returns all todos as checked. The store replaces its
     // entire array with the server response.
-    it("checks all todos when some are unchecked", async () => {
+    test("checks all todos when some are unchecked", async () => {
       const store = useTodosStore();
 
       await store.toggleTodos();

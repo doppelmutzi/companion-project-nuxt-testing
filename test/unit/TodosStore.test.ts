@@ -24,7 +24,7 @@
  * is handled automatically by the framework.
  */
 import { createPinia, setActivePinia } from "pinia";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import {
   FilterIndex,
   useTodosStore,
@@ -47,7 +47,7 @@ describe("useTodosStore", () => {
   describe("setTodos", () => {
     // setTodos is a synchronous action that directly sets the todos array.
     // No $fetch, no Nuxt API — a perfect candidate for a unit test.
-    it("sets the todos array", () => {
+    test("sets the todos array", () => {
       const store = useTodosStore();
 
       store.setTodos([todo1, todo2]);
@@ -60,7 +60,7 @@ describe("useTodosStore", () => {
   describe("todosLeft", () => {
     // todosLeft is a computed getter that counts unchecked todos.
     // Pure derived state — tests verify the reactive computation.
-    it("counts unchecked todos", () => {
+    test("counts unchecked todos", () => {
       const store = useTodosStore();
       store.setTodos([todo1, todo2, todo3]);
 
@@ -68,7 +68,7 @@ describe("useTodosStore", () => {
       expect(store.todosLeft).toBe(2);
     });
 
-    it("returns 0 when all todos are checked", () => {
+    test("returns 0 when all todos are checked", () => {
       const store = useTodosStore();
       store.setTodos([{ ...todo1, checked: true }, todo2]);
 
@@ -79,14 +79,14 @@ describe("useTodosStore", () => {
   describe("todosChecked", () => {
     // todosChecked is true when at least one todo is checked.
     // It's derived from todosLeft — tests verify the boolean logic.
-    it("returns true when at least one todo is checked", () => {
+    test("returns true when at least one todo is checked", () => {
       const store = useTodosStore();
       store.setTodos([todo1, todo2]);
 
       expect(store.todosChecked).toBe(true);
     });
 
-    it("returns false when no todos are checked", () => {
+    test("returns false when no todos are checked", () => {
       const store = useTodosStore();
       store.setTodos([todo1, todo3]);
 
@@ -97,7 +97,7 @@ describe("useTodosStore", () => {
   describe("filteredTodos", () => {
     // filteredTodos is a computed getter that filters based on filterIndex.
     // Tests cover all three filter states (ALL, CHECKED, UNCHECKED).
-    it("returns all todos when filter is ALL", () => {
+    test("returns all todos when filter is ALL", () => {
       const store = useTodosStore();
       store.setTodos([todo1, todo2, todo3]);
       store.setFilterIndex(FilterIndex.ALL);
@@ -105,7 +105,7 @@ describe("useTodosStore", () => {
       expect(store.filteredTodos).toHaveLength(3);
     });
 
-    it("returns only checked todos when filter is CHECKED", () => {
+    test("returns only checked todos when filter is CHECKED", () => {
       const store = useTodosStore();
       store.setTodos([todo1, todo2, todo3]);
       store.setFilterIndex(FilterIndex.CHECKED);
@@ -114,7 +114,7 @@ describe("useTodosStore", () => {
       expect(store.filteredTodos[0].label).toBe("Walk the dog");
     });
 
-    it("returns only unchecked todos when filter is UNCHECKED", () => {
+    test("returns only unchecked todos when filter is UNCHECKED", () => {
       const store = useTodosStore();
       store.setTodos([todo1, todo2, todo3]);
       store.setFilterIndex(FilterIndex.UNCHECKED);

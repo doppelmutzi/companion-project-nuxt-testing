@@ -15,7 +15,7 @@
  * of the test server.
  */
 import { $fetch, setup } from '@nuxt/test-utils/e2e'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 describe('app', async () => {
   // setup() boots a real Nuxt server for this test suite. It must be awaited
@@ -26,7 +26,7 @@ describe('app', async () => {
   // $fetch('/') makes a real HTTP GET request to the Nuxt server and returns
   // the SSR-rendered HTML. This verifies that the server boots correctly and
   // the index page renders the expected placeholder text in the todo input.
-  it('checks availability of input', async () => {
+  test('checks availability of input', async () => {
     const html = await $fetch('/')
     expect(html).toContain('What needs to be done?')
   })

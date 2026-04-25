@@ -10,7 +10,7 @@
  */
 import { mockNuxtImport, registerEndpoint, renderSuspended } from "@nuxt/test-utils/runtime";
 import { screen } from "@testing-library/vue";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import type { Todo } from "~/stores/todos";
 import DetailPage from "~/pages/todos/[id].vue";
 
@@ -33,14 +33,14 @@ describe("Detail Page - happy path", () => {
     useHeadMock.mockClear();
   });
 
-  it("renders the todo title and date", async () => {
+  test("renders the todo title and date", async () => {
     await renderSuspended(DetailPage, { route: "/todos/42" });
 
     expect(screen.getByText("Buy groceries")).toBeDefined();
     expect(screen.getByText(/2026-03-26/)).toBeDefined();
   });
 
-  it("sets the page title via useHead", async () => {
+  test("sets the page title via useHead", async () => {
     await renderSuspended(DetailPage, { route: "/todos/42" });
 
     expect(useHeadMock).toHaveBeenCalledWith({ title: "Todo: Buy groceries" });

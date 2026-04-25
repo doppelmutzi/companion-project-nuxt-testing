@@ -26,7 +26,7 @@
  */
 import { $fetch, fetch, setup } from '@nuxt/test-utils/e2e'
 import type { FetchError } from 'ofetch'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 interface Todo {
   id: number
@@ -38,12 +38,12 @@ interface Todo {
 describe('server API routes', async () => {
   await setup()
 
-  it('GET /api/todos returns an array', async () => {
+  test('GET /api/todos returns an array', async () => {
     const todos = await $fetch<Todo[]>('/api/todos')
     expect(Array.isArray(todos)).toBe(true)
   })
 
-  it('POST /api/todos creates a todo and returns status 201', async () => {
+  test('POST /api/todos creates a todo and returns status 201', async () => {
     // fetch() returns a standard Response so we can assert on the status code
     // alongside the parsed body — something $fetch alone doesn't expose.
     const response = await fetch('/api/todos', {
@@ -57,7 +57,7 @@ describe('server API routes', async () => {
     expect(todo.checked).toBe(false)
   })
 
-  it('GET /api/todos/:id returns the todo by id', async () => {
+  test('GET /api/todos/:id returns the todo by id', async () => {
     const created = await $fetch<Todo>('/api/todos', {
       method: 'POST',
       body: { label: 'Fetch by id' },
@@ -67,14 +67,14 @@ describe('server API routes', async () => {
     expect(todo.label).toBe('Fetch by id')
   })
 
-  it('GET /api/todos/:id returns 404 for an unknown id', async () => {
+  test('GET /api/todos/:id returns 404 for an unknown id', async () => {
     // $fetch throws on non-2xx — .catch(e => e) captures the FetchError so
     // we can assert on its .status without wrapping the test in try/catch.
     const error = await $fetch<never>('/api/todos/0').catch((e: FetchError) => e)
     expect(error.status).toBe(404)
   })
 
-  it('PATCH /api/todos/:id updates the checked state', async () => {
+  test('PATCH /api/todos/:id updates the checked state', async () => {
     const created = await $fetch<Todo>('/api/todos', {
       method: 'POST',
       body: { label: 'Toggle me' },
@@ -86,7 +86,7 @@ describe('server API routes', async () => {
     expect(updated.checked).toBe(true)
   })
 
-  it('DELETE /api/todos/:id removes a todo and returns status 204', async () => {
+  test('DELETE /api/todos/:id removes a todo and returns status 204', async () => {
     const created = await $fetch<Todo>('/api/todos', {
       method: 'POST',
       body: { label: 'Delete me' },
@@ -99,7 +99,7 @@ describe('server API routes', async () => {
     expect(error.status).toBe(404)
   })
 
-  it('PATCH /api/todos sets all todos to the given checked state', async () => {
+  test('PATCH /api/todos sets all todos to the given checked state', async () => {
     // Ensure there is at least one todo in the database before toggling.
     await $fetch('/api/todos', {
       method: 'POST',
@@ -114,7 +114,7 @@ describe('server API routes', async () => {
     expect(todos.every((t) => t.checked === true)).toBe(true)
   })
 
-  it('DELETE /api/todos clears all checked todos and returns the deleted count', async () => {
+  test('DELETE /api/todos clears all checked todos and returns the deleted count', async () => {
     const result = await $fetch<{ deleted: number }>('/api/todos', { method: 'DELETE' })
     expect(result).toHaveProperty('deleted')
     expect(typeof result.deleted).toBe('number')

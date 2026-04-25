@@ -17,7 +17,7 @@
  */
 import { mockNuxtImport, renderSuspended } from "@nuxt/test-utils/runtime";
 import { screen } from "@testing-library/vue";
-import { describe, expect, it } from "vitest";
+import { describe, expect, test } from "vitest";
 import DefaultLayout from "~/layouts/default.vue";
 
 // mockNuxtImport replaces the auto-imported useRuntimeConfig composable.
@@ -37,7 +37,7 @@ describe("Default Layout", () => {
   // Testing Library's screen object. screen.getByText() queries the rendered
   // output for visible text — asserting that the mocked appTitle propagates
   // through useRuntimeConfig → layout → Headline component.
-  it("renders the appTitle from useRuntimeConfig in the headline", async () => {
+  test("renders the appTitle from useRuntimeConfig in the headline", async () => {
     await renderSuspended(DefaultLayout);
 
     expect(screen.getByText("My Custom Title")).toBeDefined();

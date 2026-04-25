@@ -19,3 +19,7 @@ npm run typecheck  # vue-tsc --noEmit
 ```
 
 To run a single test file: `npx vitest run path/to/test.test.ts`
+
+## Test Conventions 
+
+- use only `test` instead of `it`

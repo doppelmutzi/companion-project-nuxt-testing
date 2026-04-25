@@ -35,7 +35,7 @@
  */
 import { registerEndpoint, renderSuspended } from "@nuxt/test-utils/runtime";
 import { screen } from "@testing-library/vue";
-import { describe, expect, it } from "vitest";
+import { describe, expect, test } from "vitest";
 import IndexPage from "~/pages/index.vue";
 
 const mockTodos = [
@@ -55,7 +55,7 @@ describe("Index Page", () => {
   // waits for Suspense to resolve, then renders the result. We then use
   // Testing Library's screen.getByText() to verify each todo label from
   // the mocked endpoint appears in the rendered DOM.
-  it("renders todos from the mocked /api/todos endpoint", async () => {
+  test("renders todos from the mocked /api/todos endpoint", async () => {
     await renderSuspended(IndexPage);
 
     expect(screen.getByText("Buy groceries")).toBeDefined();

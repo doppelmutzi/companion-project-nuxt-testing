@@ -17,7 +17,7 @@
  * Nuxt error handling.
  */
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import type { RouteLocationNormalized } from "vue-router";
 
 import validateTodoId from "~/middleware/validate-todo-id";
@@ -44,14 +44,14 @@ function fakeRoute(id: string): RouteLocationNormalized {
 const FROM = fakeRoute("");
 
 describe("validate-todo-id middleware", () => {
-  it("allows navigation for a valid numeric id", () => {
+  test("allows navigation for a valid numeric id", () => {
     const result = validateTodoId(fakeRoute("42"), FROM);
 
     expect(abortNavigationMock).not.toHaveBeenCalled();
     expect(result).toBeUndefined();
   });
 
-  it("aborts navigation for a non-numeric id", () => {
+  test("aborts navigation for a non-numeric id", () => {
     validateTodoId(fakeRoute("abc"), FROM);
 
     expect(createErrorMock).toHaveBeenCalledWith(
@@ -63,7 +63,7 @@ describe("validate-todo-id middleware", () => {
     expect(abortNavigationMock).toHaveBeenCalled();
   });
 
-  it("aborts navigation for a decimal id", () => {
+  test("aborts navigation for a decimal id", () => {
     validateTodoId(fakeRoute("1.5"), FROM);
 
     expect(createErrorMock).toHaveBeenCalledWith(
@@ -72,7 +72,7 @@ describe("validate-todo-id middleware", () => {
     expect(abortNavigationMock).toHaveBeenCalled();
   });
 
-  it("aborts navigation for an empty id", () => {
+  test("aborts navigation for an empty id", () => {
     validateTodoId(fakeRoute(""), FROM);
 
     expect(abortNavigationMock).toHaveBeenCalled();
