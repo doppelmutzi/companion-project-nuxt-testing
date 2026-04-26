@@ -25,31 +25,32 @@
 - **Tier 1 — Unit tests (`test/unit/`, `environment: 'happy-dom'`)**
   - When to use: simple components, pure composable logic, isolated store logic
   - T1 — `Headline.test.ts`: render a plain component with `render()` from Vue Testing Library
-  - T2 — `TodosStore.test.ts`: test store actions/getters in isolation, mock `$fetch` with `vi.fn()`
-  - T3 — `UseDarkMode.test.ts` *(composables can be unit-tested too)*: `useState`-based composable logic without Nuxt runtime
+  - T2 — `TodosStore.test.ts`: test synchronous store getters and state mutations in isolation (no Nuxt runtime, no `$fetch`)
 
 - **Tier 2 — Nuxt runtime tests (`test/nuxt/`, `environment: 'nuxt'`)**
   - How `environment: 'nuxt'` works: auto-imports, Pinia, router — all wired up
   - `mountSuspended` vs `renderSuspended`: component-level vs page-level mounting
-    - T4 — `TodoItem.test.ts`: `mountSuspended`, assert label + `<NuxtLink>` href
+    - T3 — `TodoItem.test.ts`: `mountSuspended`, assert label + `<NuxtLink>` href, snapshot testing
   - `registerEndpoint`: mocking API routes in-process
-    - T5 — `IndexPage.test.ts`: mock `/api/todos`, verify seeded todos render with `renderSuspended`
-    - T7 — `TodoList.test.ts`: `registerEndpoint` + `mockComponent` to stub `TodoItem`
-    - T9 — `DetailPage404.test.ts`: register 404 endpoint, assert error page renders
-    - T11 — `DetailPageHappyPath.test.ts`: mock `/api/todos/:id`, assert title + `useHead` `<title>`
+    - T4 — `IndexPage.test.ts`: mock `/api/todos`, verify seeded todos render with `renderSuspended`
+    - T5 — `TodosStoreActions.test.ts`: mock CRUD endpoints with method matching, test async store actions (`addTodo`, `toggleCheckTodo`, `removeTodo`, `clearCheckedTodos`, `toggleTodos`)
+    - T6 — `DetailPage404.test.ts`: register null endpoint, assert `renderSuspended` rejects and error page renders correctly
+    - T7 — `DetailPageHappyPath.test.ts`: mock `/api/todos/:id`, assert rendered content + `useHead` title via `mockNuxtImport`
   - `mockNuxtImport`: replacing auto-imported composables
-    - T6 — `DefaultLayout.test.ts`: mock `useRuntimeConfig` to inject custom `appTitle`
-    - T8 — `ValidateTodoIdMiddleware.test.ts`: mock `abortNavigation`, test middleware in isolation
+    - T8 — `DefaultLayout.test.ts`: mock `useRuntimeConfig` to inject custom `appTitle`
+    - T9 — `UseDarkMode.test.ts`: mock `useState` to control dark mode state; why composables with Nuxt auto-imports need the nuxt environment (not unit)
+    - T10 — `ValidateTodoIdMiddleware.test.ts`: mock `abortNavigation` + `createError`, test middleware function directly without rendering a page
   - `mockComponent`: replacing child components with stubs
-    - T7 — `TodoList.test.ts` *(combined with `registerEndpoint` above)*
+    - T11 — `TodoList.test.ts`: `defineComponent + h()` stub, seed store directly with `setTodos()`
+    - T12 — `TodoList.globalstub.test.ts`: `global.stubs` as a per-call alternative to the file-scoped `mockComponent` macro — enables different stubs per test without workarounds
   - User interactions in the Nuxt environment
-    - T10 — `TodoInput.test.ts`: `userEvent.type()` + `userEvent.keyboard('{Enter}')`, assert new todo appears
+    - T13 — `TodoInput.test.ts`: VTU `setValue`/`trigger` vs `userEvent.type()` + `userEvent.keyboard('{Enter}')`, assert new todo appears
 
 - **Tier 3 — E2E tests (`test/e2e/`, `environment: 'node'`)**
   - How `setup()` boots a real Nuxt server; `$fetch` vs `createPage`
-  - T12 — `app.test.ts`: SSR smoke test, `$fetch('/')`, assert HTML contains todo input
-  - T13 — `api.test.ts`: test all CRUD API endpoints (`GET`, `POST`, `PATCH`, `DELETE`) via `$fetch`
-  - T14 — `navigation.test.ts` / `navigation.headed.test.ts`: full navigation flow with Playwright — add todo, click `<NuxtLink>`, verify detail page, click headline to go home
+  - T14 — `app.test.ts`: SSR smoke test, `$fetch('/')`, assert HTML contains todo input
+  - T15 — `api.test.ts`: test all CRUD API endpoints (`GET`, `POST`, `PATCH`, `DELETE`) via `$fetch`
+  - T16 — `navigation.test.ts` / `navigation.headed.test.ts`: full navigation flow with Playwright — add todo, click `<NuxtLink>`, verify detail page, click headline to go home
 
 - **Summary: choosing the right tier**
   - Decision matrix: unit → nuxt runtime → e2e

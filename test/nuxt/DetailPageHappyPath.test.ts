@@ -10,7 +10,7 @@
  */
 import { mockNuxtImport, registerEndpoint, renderSuspended } from "@nuxt/test-utils/runtime";
 import { screen } from "@testing-library/vue";
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import type { Todo } from "~/stores/todos";
 import DetailPage from "~/pages/todos/[id].vue";
 
@@ -23,15 +23,10 @@ const mockTodo: Todo = {
 
 registerEndpoint("/api/todos/42", () => mockTodo);
 
-// vi.hoisted runs before imports are processed, so useHeadMock is available
-// when mockNuxtImport's factory executes (which is also hoisted).
 const { useHeadMock } = vi.hoisted(() => ({ useHeadMock: vi.fn() }));
 mockNuxtImport("useHead", () => useHeadMock);
 
 describe("Detail Page - happy path", () => {
-  beforeEach(() => {
-    useHeadMock.mockClear();
-  });
 
   test("renders the todo title and date", async () => {
     await renderSuspended(DetailPage, { route: "/todos/42" });

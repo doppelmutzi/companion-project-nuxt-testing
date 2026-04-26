@@ -5,10 +5,10 @@
  * Two complementary scenarios:
  *
  * 1. Detail page 404: render the dynamic [id].vue page with a registerEndpoint
- *    that returns null for a non-existent todo. The page's async setup calls
- *    useFetch, gets null back, and throws createError({ statusCode: 404 }).
+ *    that throws a 404 — mirroring what the real server handler does. useFetch
+ *    sets fetchError.value on non-2xx responses; the page re-throws it.
  *    renderSuspended propagates the thrown error, so we can assert the promise
- *    rejects — verifying that the page correctly triggers a 404.
+ *    rejects — verifying that the page correctly surfaces a 404.
  *
  * 2. Error page rendering: render error.vue directly via renderSuspended,
  *    passing an error object as a prop. This verifies the custom error page
@@ -24,9 +24,11 @@ import { describe, expect, test } from "vitest";
 import DetailPage from "~/pages/todos/[id].vue";
 import ErrorPage from "~/error.vue";
 
-// Return null for a non-existent todo. The detail page checks !todo.value
-// after useFetch and throws createError({ statusCode: 404 }).
-registerEndpoint("/api/todos/999", () => null);
+// Throw a 404 from the endpoint, mirroring what the real [id].get.ts does.
+// useFetch sets fetchError.value on non-2xx responses, and the page re-throws it.
+registerEndpoint("/api/todos/999", () => {
+  throw createError({ statusCode: 404, statusMessage: "Todo with id 999 not found" });
+});
 
 describe("Detail Page - Todo not found", () => {
   test("throws a 404 when the todo does not exist", async () => {
@@ -34,7 +36,19 @@ describe("Detail Page - Todo not found", () => {
       renderSuspended(DetailPage, {
         route: "/todos/999",
       }),
-    ).rejects.toThrow();
+    // ).rejects.toThrow();
+    ).rejects.toMatchObject({ statusCode: 404, statusMessage: `Todo with id 999 not found` });
+  });
+});
+
+// This also confirms that renderSuspended runs route middleware: the
+// validate-todo-id middleware fires for /todos/abc and aborts with a 400
+// before the page setup ever executes.
+describe("Detail Page - invalid id", () => {
+  test("throws a 400 when the todo id is not a valid integer", async () => {
+    await expect(
+      renderSuspended(DetailPage, { route: "/todos/abc" }),
+    ).rejects.toMatchObject({ statusCode: 400, statusMessage: 'Invalid todo id: "abc"' });
   });
 });
 
@@ -42,12 +56,12 @@ describe("Error Page", () => {
   test("renders status code, message, and back to home button", async () => {
     await renderSuspended(ErrorPage, {
       props: {
-        error: { status: 404, message: "Todo with id 999 not found" } as NuxtError,
+        error: { status: 500, message: "Something went wrong" } as NuxtError,
       },
     });
 
-    expect(screen.getByText("404")).toBeDefined();
-    expect(screen.getByText("Todo with id 999 not found")).toBeDefined();
+    expect(screen.getByText("500")).toBeDefined();
+    expect(screen.getByText("Something went wrong")).toBeDefined();
     expect(screen.getByText("← Back to home")).toBeDefined();
   });
 });

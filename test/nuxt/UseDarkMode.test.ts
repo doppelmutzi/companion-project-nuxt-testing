@@ -28,69 +28,51 @@
  * testing guide.
  */
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import themeConfig from "~/utils/theme";
-
-// vi.hoisted creates the mock ref before mockNuxtImport's factory runs.
-// This ref replaces what useState would normally return, giving us control
-// over the dark mode state in each test.
-const { darkModeRef } = vi.hoisted(() => {
-  const { ref } = require("vue");
-  return { darkModeRef: ref(true) };
-});
-
-// mockNuxtImport replaces the auto-imported useState with our mock.
-// The factory returns a function that ignores the key/init arguments and
-// always returns our controllable ref — simulating useState('darkMode', ...).
-// This is called once at module load time (it's hoisted), so it must be
-// at the top level, not inside describe/it.
-mockNuxtImport("useState", () => {
-  return () => darkModeRef;
-});
-
 import { useDarkMode } from "~/composables/useDarkMode";
 
-describe("useDarkMode", () => {
-  // Reset the mock ref before each test to ensure clean state.
-  beforeEach(() => {
-    darkModeRef.value = true;
-  });
+// vi.hoisted creates useStateMock before the mockNuxtImport factory runs.
+// The factory () => useStateMock evaluates useStateMock directly during
+// hoisting — without vi.hoisted it would be in the temporal dead zone.
+const { useStateMock } = vi.hoisted(() => ({ useStateMock: vi.fn() }));
 
-  // isDark should reflect the value from useState. Since our mock returns
-  // a ref initialized to true, this matches the composable's default of
-  // useState('darkMode', () => true).
-  test("has isDark set to true by default", () => {
-    const { isDark } = useDarkMode();
+// () => useStateMock evaluates useStateMock directly when the factory runs
+// during hoisting — this is why vi.hoisted is required here. Wrapping it in
+// a second closure (() => () => darkModeRef) would be lazy and not require it.
+mockNuxtImport("useState", () => useStateMock);
+
+
+describe("useDarkMode", () => {
+  test("starts in dark mode and toggles to light and back", () => {
+    useStateMock.mockReturnValue(ref(true));
+    const { isDark, theme, toggleDarkMode } = useDarkMode();
 
     expect(isDark.value).toBe(true);
-  });
-
-  // toggleDarkMode flips isDark.value. Because useState returns a shared ref,
-  // the toggle mutates the same ref — we verify the reactive update.
-  test("toggles isDark when toggleDarkMode is called", () => {
-    const { isDark, toggleDarkMode } = useDarkMode();
+    expect(theme.value).toEqual(themeConfig.DARK);
 
     toggleDarkMode();
     expect(isDark.value).toBe(false);
+    expect(theme.value).toEqual(themeConfig.LIGHT);
 
     toggleDarkMode();
     expect(isDark.value).toBe(true);
-  });
-
-  // theme is a computed derived from isDark. When isDark is true, it should
-  // return the DARK theme config object.
-  test("returns DARK theme config when isDark is true", () => {
-    const { theme } = useDarkMode();
-
     expect(theme.value).toEqual(themeConfig.DARK);
   });
 
-  // After toggling to false, the computed reactively switches to LIGHT.
-  test("returns LIGHT theme config when isDark is false", () => {
-    const { theme, toggleDarkMode } = useDarkMode();
+  test("starts in light mode and toggles to dark and back", () => {
+    useStateMock.mockReturnValue(ref(false));
+    const { isDark, theme, toggleDarkMode } = useDarkMode();
+
+    expect(isDark.value).toBe(false);
+    expect(theme.value).toEqual(themeConfig.LIGHT);
 
     toggleDarkMode();
+    expect(isDark.value).toBe(true);
+    expect(theme.value).toEqual(themeConfig.DARK);
 
+    toggleDarkMode();
+    expect(isDark.value).toBe(false);
     expect(theme.value).toEqual(themeConfig.LIGHT);
   });
 });

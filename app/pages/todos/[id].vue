@@ -24,17 +24,15 @@ definePageMeta({
 const route = useRoute();
 const todoId = Number(route.params.id);
 
-const { data: todo } = await useFetch<Todo>(`/api/todos/${todoId}`);
+const { data: todo, error: fetchError } = await useFetch<Todo>(`/api/todos/${todoId}`);
 
-if (!todo.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: `Todo with id ${todoId} not found`,
-  });
+
+if (fetchError.value) {
+  throw fetchError.value;
 }
 
 useHead({
-  title: `Todo: ${todo.value.label}`,
+  title: `Todo: ${todo.value?.label}`,
 });
 </script>
 

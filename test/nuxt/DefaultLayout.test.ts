@@ -25,7 +25,7 @@ import DefaultLayout from "~/layouts/default.vue";
 // custom appTitle. This runs before any component code executes.
 mockNuxtImport("useRuntimeConfig", () => {
   return () => ({
-    app: { baseURL: "/", buildId: "test" },
+    app: { baseURL: "/" }, // required: Nuxt uses baseURL to initialize the router
     public: {
       appTitle: "My Custom Title",
     },

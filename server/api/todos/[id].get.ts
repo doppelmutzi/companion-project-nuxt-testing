@@ -5,10 +5,11 @@ export default defineEventHandler((event) => {
   const todo = getTodoById(id);
 
   if (!todo) {
-    throw createError({
+    const error = createError({
       statusCode: 404,
       statusMessage: `Todo with id ${id} not found`,
     });
+    throw error;
   }
 
   return todo;
