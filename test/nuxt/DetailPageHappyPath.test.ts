@@ -28,16 +28,13 @@ mockNuxtImport("useHead", () => useHeadMock);
 
 describe("Detail Page - happy path", () => {
 
-  test("renders the todo title and date", async () => {
+  test("renders the todo title and date and sets the title correctly", async () => {
     await renderSuspended(DetailPage, { route: "/todos/42" });
 
     expect(screen.getByText("Buy groceries")).toBeDefined();
     expect(screen.getByText(/2026-03-26/)).toBeDefined();
-  });
-
-  test("sets the page title via useHead", async () => {
-    await renderSuspended(DetailPage, { route: "/todos/42" });
-
+    
     expect(useHeadMock).toHaveBeenCalledWith({ title: "Todo: Buy groceries" });
   });
+
 });

@@ -36,7 +36,6 @@ describe("Detail Page - Todo not found", () => {
       renderSuspended(DetailPage, {
         route: "/todos/999",
       }),
-    // ).rejects.toThrow();
     ).rejects.toMatchObject({ statusCode: 404, statusMessage: `Todo with id 999 not found` });
   });
 });
