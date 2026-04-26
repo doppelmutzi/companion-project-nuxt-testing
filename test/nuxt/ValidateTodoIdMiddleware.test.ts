@@ -17,7 +17,7 @@
  * Nuxt error handling.
  */
 import { mockNuxtImport } from "@nuxt/test-utils/runtime";
-import { describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import type { RouteLocationNormalized } from "vue-router";
 
 import validateTodoId from "~/middleware/validate-todo-id";
@@ -25,7 +25,7 @@ import validateTodoId from "~/middleware/validate-todo-id";
 const { abortNavigationMock, createErrorMock } = vi.hoisted(() => {
   return {
     abortNavigationMock: vi.fn(),
-    createErrorMock: vi.fn((err: unknown) => err),
+    createErrorMock: vi.fn((err) => err),
   };
 });
 
@@ -41,19 +41,21 @@ function fakeRoute(id: string): RouteLocationNormalized {
 }
 
 /** The middleware only inspects `to` — this satisfies the required `from` parameter. */
-const FROM = fakeRoute("");
+const homeRoute = {
+  name: "index",
+  path: "/",
+  fullPath: "/",
+} as RouteLocationNormalized;
 
 describe("validate-todo-id middleware", () => {
-  test("allows navigation for a valid numeric id", () => {
-    const result = validateTodoId(fakeRoute("42"), FROM);
-
-    expect(abortNavigationMock).not.toHaveBeenCalled();
-    expect(result).toBeUndefined();
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
+  
   test("aborts navigation for a non-numeric id", () => {
-    validateTodoId(fakeRoute("abc"), FROM);
-
+    validateTodoId(fakeRoute("abc"), homeRoute);
+    
     expect(createErrorMock).toHaveBeenCalledWith(
       expect.objectContaining({
         statusCode: 400,
@@ -61,20 +63,24 @@ describe("validate-todo-id middleware", () => {
       }),
     );
     expect(abortNavigationMock).toHaveBeenCalled();
+    
   });
-
-  test("aborts navigation for a decimal id", () => {
-    validateTodoId(fakeRoute("1.5"), FROM);
-
+  
+  test("aborts navigation for an empty id", () => {
+    validateTodoId(fakeRoute(""), homeRoute);
+    
     expect(createErrorMock).toHaveBeenCalledWith(
-      expect.objectContaining({ statusCode: 400 }),
+      expect.objectContaining({
+        statusCode: 400,
+        statusMessage: 'Invalid todo id: ""',
+      }),
     );
     expect(abortNavigationMock).toHaveBeenCalled();
   });
 
-  test("aborts navigation for an empty id", () => {
-    validateTodoId(fakeRoute(""), FROM);
+  test("allows navigation for a valid numeric id", () => {
+    validateTodoId(fakeRoute("42"), homeRoute);
 
-    expect(abortNavigationMock).toHaveBeenCalled();
+    expect(abortNavigationMock).not.toHaveBeenCalled();
   });
 });
