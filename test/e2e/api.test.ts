@@ -55,8 +55,10 @@ describe('server API routes', async () => {
     expect(response.status).toBe(201)
     expect(todo.label).toBe('T11 test todo')
     expect(todo.checked).toBe(false)
+    const todos = await $fetch<Todo[]>('/api/todos')
+    expect(todos.length).toBe(1);
   })
-
+  
   test('GET /api/todos/:id returns the todo by id', async () => {
     const created = await $fetch<Todo>('/api/todos', {
       method: 'POST',
@@ -66,14 +68,14 @@ describe('server API routes', async () => {
     expect(todo.id).toBe(created.id)
     expect(todo.label).toBe('Fetch by id')
   })
-
+  
   test('GET /api/todos/:id returns 404 for an unknown id', async () => {
     // $fetch throws on non-2xx — .catch(e => e) captures the FetchError so
     // we can assert on its .status without wrapping the test in try/catch.
     const error = await $fetch<never>('/api/todos/0').catch((e: FetchError) => e)
     expect(error.status).toBe(404)
   })
-
+  
   test('PATCH /api/todos/:id updates the checked state', async () => {
     const created = await $fetch<Todo>('/api/todos', {
       method: 'POST',
@@ -84,15 +86,22 @@ describe('server API routes', async () => {
       body: { checked: true },
     })
     expect(updated.checked).toBe(true)
+    const todos = await $fetch<Todo[]>('/api/todos')
+    expect(todos.length).toBe(3);
   })
-
+  
   test('DELETE /api/todos/:id removes a todo and returns status 204', async () => {
     const created = await $fetch<Todo>('/api/todos', {
       method: 'POST',
       body: { label: 'Delete me' },
     })
+    let todos = await $fetch<Todo[]>('/api/todos')
+    expect(todos.length).toBe(4);
+
     const response = await fetch(`/api/todos/${created.id}`, { method: 'DELETE' })
     expect(response.status).toBe(204)
+    todos = await $fetch<Todo[]>('/api/todos')
+    expect(todos.length).toBe(3);
 
     // A subsequent GET should confirm the todo is gone.
     const error = await $fetch<never>(`/api/todos/${created.id}`).catch((e: FetchError) => e)

@@ -47,9 +47,9 @@
     - T13 — `TodoInput.test.ts`: VTU `setValue`/`trigger` vs `userEvent.type()` + `userEvent.keyboard('{Enter}')`, assert new todo appears
 
 - **Tier 3 — E2E tests (`test/e2e/`, `environment: 'node'`)**
-  - How `setup()` boots a real Nuxt server; `$fetch` vs `createPage`
-  - T14 — `app.test.ts`: SSR smoke test, `$fetch('/')`, assert HTML contains todo input
-  - T15 — `api.test.ts`: test all CRUD API endpoints (`GET`, `POST`, `PATCH`, `DELETE`) via `$fetch`
+  - ✅ How `setup()` boots a real Nuxt server; `$fetch` vs `createPage`
+  - ✅ T14 — `app.test.ts`: SSR smoke test, `$fetch('/')`, assert HTML contains todo input
+  - ✅ T15 — `api.test.ts`: test all CRUD API endpoints (`GET`, `POST`, `PATCH`, `DELETE`) via `$fetch`
   - T16 — `navigation.test.ts` / `navigation.headed.test.ts`: full navigation flow with Playwright — add todo, click `<NuxtLink>`, verify detail page, click headline to go home
 
 - **Summary: choosing the right tier**
